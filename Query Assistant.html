@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My webpage</title>
+    <style>
+        /* Your existing styles */
+
+        body {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 20%;
+            justify-content: space-between;
+            padding: 20px;
+			margin-top:50px;
+        }
+        .right-side {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+			margin-top:50px;
+        }
+        #myTextBox, #examplesDropdown {
+            width: 60%;
+            height: 4em;
+        }
+        .bold {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .italic {
+            font-style: italic;
+        }
+        .hide {
+            display: none;
+        }
+        h4, #exampleTitle {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        #compileButton {
+            margin: 10px 0;
+        }
+        .indent {
+            margin-left: 20px;
+        }
+
+        /* Your CSS related to Display Data */
+        details {
+            cursor: pointer;
+        }
+		
+		  body, html {
+        margin: 0;
+        padding: 0;
+    }
+
+    </style>
+    <script>
+               function toggle(id) {
+            var e = document.getElementById(id);
+            if (e.style.display == 'block') {
+                e.style.display = 'none';
+            } else {
+                e.style.display = 'block';
+            }
+        }
+
+function handleSelection(dropdown) {
+    var name = dropdown.options[dropdown.selectedIndex].value;
+
+    // Hide all sections
+    document.getElementById('tableSection').classList.add("hide");
+    document.getElementById('dmsTableSection').classList.add("hide");
+    document.getElementById('ownershipTableSection').classList.add("hide");
+    document.getElementById('sanctionsTableSection').classList.add("hide");
+    document.getElementById('debtTableSection').classList.add("hide");
+
+    // Show section based on selection
+    if (name == "Georev") {
+        document.getElementById('tableSection').classList.remove("hide");
+        document.getElementById("tableName").innerText = `Tables in ${name}`;
+    } else if (name == "Data Management Solutions") {
+        document.getElementById('dmsTableSection').classList.remove("hide");
+        document.getElementById("dmsTableName").innerText = `Tables in ${name}`;
+    } else if (name == "Ownership") {
+        document.getElementById('ownershipTableSection').classList.remove("hide");
+        document.getElementById("ownershipTableName").innerText = `Tables in ${name}`;
+    } else if (name == "Sanctions") {
+        document.getElementById('sanctionsTableSection').classList.remove("hide");
+        document.getElementById("sanctionsTableName").innerText = `Tables in ${name}`;
+    } else if (name == "Debt Capital Structure") {
+        document.getElementById('debtTableSection').classList.remove("hide");
+        document.getElementById("debtTableName").innerText = `Tables in ${name}`;
+    }
+    
+    document.getElementById('exampleSection').classList.remove("hide");
+    document.getElementById("exampleTitle").innerText = `See natural language examples from ${name}`;
+    var exampleQueries = {
+        "Data Management Solutions": ["Data Management Example Query 1", "Data Management Example Query 2", "Data Management Example Query 3"],
+        "Ownership": ["Ownership Example Query 1", "Ownership Example Query 2", "Ownership Example Query 3"],
+        "Georev": ["Georev Example Query 1", "Georev Example Query 2", "Georev Example Query 3"],
+        "Sanctions": ["Sanctions Example Query 1", "Sanctions Example Query 2", "Sanctions Example Query 3"],
+        "Debt Capital Structure": ["Debt Capital Structure Example Query 1", "Debt Capital Structure Example Query 2", "Debt Capital Structure Example Query 3"]
+    };
+
+    var examplesDropdown = document.getElementById("examplesDropdown");
+    examplesDropdown.options.length = 1; // Clears previous options
+
+    exampleQueries[name].forEach(function(query) {
+        var option = document.createElement("option");
+        option.text = query;
+        option.value = query;
+        examplesDropdown.add(option);
+    });
+}
+        function handleExampleSelection(e) {
+            document.getElementById("myTextBox").value = e.options[e.selectedIndex].text;
+        }
+
+        function compileQuery() {
+            document.getElementById("sqlQuery").value = "SELECT * FROM apples";
+            document.getElementById("tableName").innerText = "Tables in this query";
+        }
+		
+
+    </script>
+</head>
+<body>
+<img class="top-image" src="AL.png" alt="description of the image">
+    <div class="container">
+        <h2>Database Selection</h2>
+        <select id="myDropdown" onchange="handleSelection(this)">
+            <option value="" disabled selected>Select</option>
+        <option value="Data Management Solutions">Data Management Solutions</option>
+        <option value="Ownership">Ownership</option>
+        <option value="Georev">Georev</option>
+        <option value="Sanctions">Sanctions</option>
+        <option value="Debt Capital Structure">Debt Capital Structure</option>
+        </select>
+
+        <div id="tableSection" class="hide">
+            <h4 id="tableName">Tables in Georev</h4>
+            <details><summary>gr_v2.gr_country_region</summary><p><i>This table contains mappings from ISO_COUNTRY codes to the region structure.</i></p>
+            <ul>
+			    
+<li><b>iso_country</b>: Two-letter code representing a country</li>
+<li><b>start_date</b>: Date the record was first published</li>
+<li><b>end_date</b>: Date the record was terminated. A null end_date indicate the record is considered current.</li>
+<li><b>parent_region_id</b>: Identifier representing the geographic area that the country is a part of</li>
+<li><b>path</b>: Fully articulated path to this geography from the geographic tree's root sector, separated by > signs. Each layer in the path is indicated by its Name value in this table.</li>
+<li><b>effective_start_date</b>: Date that the country-to-region mapping was first considered effective</li>
+<li><b>effective_end_date</b>: Date that the country-to-region mapping was no longer considered effective. The date will reflect when items will begin to be assigned to the new region based on the period end date of the report.</li>
+<li><b>country_name</b>: Name of the country that corresponds with the ISO_COUNTRY code between the effective start and end dates</li>
+</ul></details>
+<details><summary>gr_v2.gr_coverage</summary><p><i>This table contains coverage information for each entity that has a report in the Geographic Revenue Exposure package.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>actively_covered</b>: Flag indicating whether data is actively being collected for the company</li>
+<li><b>latest_period_end_date</b>: Date of the last report period collected</li>
+</ul></details>
+<details><summary>gr_v2.gr_item</summary><p><i>This table contains revenue exposures at the country level for all records, current and historical.</i></p>
+<ul>
+<li><b>report_id</b>: Unique identifier for the report. The report is the container entity for all items detailed by the company in a single period, as described in this record.</li>
+<li><b>iso_country</b>: Two-letter code representing the country for which geographic revenue data is being reported</li>
+<li><b>start_date</b>: Date the record was first published</li>
+<li><b>end_date</b>: Date the record was terminated. A null end_date indicate the record is considered current.</li>
+<li><b>est_pct</b>: Estimated percentage of revenue derived from the associated country</li>
+<li><b>conf</b>: Confidence score for the value in Est_Percent and Est_Amount fields. A Conf score of 1 indicates a declared value, which automatically has a 100% confidence, or a calculated total value, which has a logic confidence of 100%. A Conf score of 0.50 to 0.99 indicates an extrapolated value, with progressively lower scores denoting decreasing certainty of precision.</li>
+<li><b>certainty_rank</b>: Certainty score for the value in Est_Percent based on source metadata. Ranges from 1 (low certainty) to 80 (declared value).</li>
+<li><b>certainty_class</b>: A grouping for the value in Est_Pct based on Certainty Rank. Ranges from E (low) to A (high).</li>
+</ul></details>
+<details><summary>gr_v2.gr_parent</summary><p><i>This table contains parent hierarchy relationships for all entities included in the Geographic Revenue Exposure package.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>factset_ult_parent_entity_id</b>: Unique FactSet-generated identifier representing the ultimate owner of the entity's equity</li>
+</ul></details>
+<details><summary>gr_v2.gr_region_structure</summary><p><i>This table contains the reference region and geographic tree data for all geographic exposure tree reports.</i></p>
+<ul>
+<li><b>region_id</b>: Identifier representing the geographic region</li>
+<li><b>start_date</b>: Date the record was first published</li>
+<li><b>end_date</b>: Date the record was terminated. A null end_date indicate the record is considered current.</li>
+<li><b>parent_id</b>: Unique identifier representing the geographic region which is the immediate parent to this region</li>
+<li><b>name</b>: Name of the geographic region</li>
+<li><b>layer_number</b>: Code denoting the depth of region's location within the geographic tree:0 = Global, 1 = Super-Region, 2 = Region, 3 = Area, and 4 = Country</li>
+<li><b>path</b>: Fully articulated path to this geography from the geographic tree's root sector, separated by > signs. Each layer in the path is indicated by its Name value in this table.</li>
+</ul></details>
+<details><summary>gr_v2.gr_report</summary><p><i>This table contains the information about the reporting periods for entities with Geographic Revenue Exposure data.</i></p>
+<ul>
+<li><b>report_id</b>: Unique identifier for the report. The report is the container entity for all items detailed by the company in a single period, as described in this record.</li>
+<li><b>start_date</b>: Date the record was first published</li>
+<li><b>end_date</b>: Date the record was terminated. A null end_date indicate the record is considered current.</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>period_start_date</b>: Date on which the report period began. Usually but not always the first day of a fiscal period.</li>
+<li><b>period_end_date</b>: Date on which the report period completed. This is usually, but not always, the end of a fiscal period.</li>
+</ul></details>
+<details><summary>gr_v2.gr_sec_entity</summary><p><i>This table contains current and historical FactSet Permanent Identifier (FSYM_ID) to FactSet Entity Identifier (FactSet_Entity_ID) mappings for those entities covered by the Geographic Revenue database. These mappings are provided at the security-level.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>gr_v2.gr_sec_entity_hist</summary><p><i>This table maps FSYM_IDs to FACTSET_ENTITY_IDs for the Geographic Revenue universe. The mappings are provided at the security FSYM_ID level.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>ref_v2.country_map</summary><p><i>This table contains a mapping of the ISO country codes to their descriptions, regions and currency.</i></p>
+<ul>
+<li><b>iso_country</b>: Two-letter code representing a country</li>
+<li><b>country_desc</b>: Common name of the country</li>
+<li><b>region_code</b>: One-letter FactSet-generated code representing a global region</li>
+<li><b>iso_currency</b>: Code representing the country's currency</li>
+</ul></details>
+<details><summary>ref_v2.entity_type_map</summary><p><i>This table contains a mapping of the codes representing entity structures to their descriptions.</i></p>
+<ul>
+<li><b>entity_type_code</b>: Code identifying the entity structure</li>
+<li><b>entity_type_desc</b>: Textual description of the entity structure</li>
+</ul></details>
+<details><summary>ref_v2.factset_industry_map</summary><p><i>This table contains a mapping of the codes representing FactSet proprietary industries to their descriptions and FactSet sectors.</i></p>
+<ul>
+<li><b>factset_industry_code</b>: Code representing a FactSet proprietary sector</li>
+<li><b>factset_industry_desc</b>: Textual description of the FactSet proprietary industry</li>
+<li><b>factset_sector_code</b>: Code representing a FactSet proprietary sector</li>
+</ul></details>
+<details><summary>ref_v2.factset_sector_map</summary><p><i>This table contains a mapping of the codes representing FactSet proprietary sectors to their descriptions.</i></p>
+<ul>
+<li><b>factset_sector_code</b>: Code representing a FactSet proprietary sector</li>
+<li><b>factset_sector_desc</b>: Textual description of the FactSet proprietary sector</li>
+</ul></details>
+<details><summary>ref_v2.sic_map</summary><p><i>This table contains a mapping of Standard Industrial Classification (SIC) codes to their descriptions.</i></p>
+<ul>
+<li><b>sic_code</b>: Code representing the Standard Industrial Classification (SIC) code which identifies the security's business type</li>
+<li><b>sic_desc</b>: Textual description of the industry that corresponds to the SIC code</li>
+</ul></details>
+<details><summary>sym_v1.sym_entity</summary><p><i>This table contains FactSet Entity Identifier (FactSet_Entity_ID) mappings for entities supported by FactSet.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_proper_name</b>: Name that the entity is commonly referred to as, normalized and in proper case</li>
+<li><b>iso_country</b>: Two-letter code representing the country in which the entity is domiciled. This corresponds to the country of the company's headquarters.</li>
+<li><b>entity_type</b>: Three-letter code identifying the entity's structure</li>
+</ul></details>
+<details><summary>sym_v1.sym_entity_sector</summary><p><i>This table contains FactSet Entity Identifier (FactSet_Entity_ID) to sector and industry classification mappings.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>primary_sic_code</b>: Four-digit code that identifies the business type of the entity</li>
+<li><b>industry_code</b>: FactSet proprietary industry code assigned to the entity</li>
+<li><b>sector_code</b>: Four-digit code identifying FactSet broad industry sector classification</li>
+</ul></details>
+        </div>
+
+        <!-- Add new section for 'Tables in DMS' -->
+        <div id="dmsTableSection" class="hide">
+            <h4 id="dmsTableName">Tables in DMS</h4>
+            <details><summary>ent_v1.ent_entity_address</summary><p><i>This table contains address information for entity locations.  Headquarters and secondary office locations are included.</i></p>
+<ul>
+<li><b>address_id</b>: Unique identifier assigned to an entity's location</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>location_city</b>: City in the entity's address</li>
+<li><b>state_province</b>: Two-letter code representing a state or province</li>
+<li><b>location_postal_code</b>: Postal code or zip code in the entity's  address</li>
+<li><b>city_state_zip</b>: Concatenation of a location's city, state/province, and postal/zip code</li>
+<li><b>hq</b>: The Flag indicating whether the address is the HQ address of the Entity; 1=Yes, 0=No</li>
+<li><b>tele</b>: Telephone number tied to an address, excluding the country code and area code</li>
+<li><b>tele_full</b>: Full telephone number tied to an address, including the country code and area code</li>
+<li><b>fax_country</b>: Country code of the fax number</li>
+<li><b>fax_area</b>: City or area code of the fax number</li>
+<li><b>fax</b>: Entity's fax number, excluding the country code and area code</li>
+<li><b>fax_full</b>: Full fax number, including the country code and area code</li>
+<li><b>location_street1</b>: First street line in the entity's address</li>
+<li><b>location_street2</b>: Second street line in the entity's address</li>
+<li><b>location_street3</b>: Third street line in the entity's address</li>
+<li><b>iso_country</b>: Two-letter code representing a country</li>
+<li><b>tele_country</b>: Country code of the telephone number</li>
+<li><b>tele_area</b>: City or area code of the telephone number</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_address_coord</summary><p><i>This table contains latitude and longitude coordinates for specific address locations.</i></p>
+<ul>
+<li><b>address_id</b>: Unique identifier assigned to an entity's location</li>
+<li><b>latitude</b>: Latitude value that corresponds to the location</li>
+<li><b>longitude</b>: Longitude value that corresponds to the location</li>
+<li><b>resolution_code</b>: Code denoting the level of granularity that corresponds to latitude and longitude coordinates</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_affiliates</summary><p><i>This table contains hierarchical relationships between entities. Percent held is also available for cases where ownership has been collected by FactSet.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>factset_affiliated_entity_id</b>: Unique FactSet-generated entity level identifier assigned to the Affiliated Entity</li>
+<li><b>pct_held</b>: Percent of the Affiliated Entity held by the entity. This is only available for Ownership related affiliation types.</li>
+<li><b>aff_type_code</b>: Code representing the type of relationship between an entity and an affiliated entity</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_changes</summary><p><i>This table contains a history of changes to entities. The following types of changes are included in this file: FACTSET_PARENT_ENTITY_ID and ENTITY_TYPE.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>change_type</b>: Field that corresponds to the entitys attribute that was changed (FACTSET_PARENT_ENTITY_ID or ENTITY_TYPE)</li>
+<li><b>change_date</b>: Date on which the change took place</li>
+<li><b>old_value</b>: Previous value of the attribute</li>
+<li><b>new_value</b>: New value of the attribute</li>
+<li><b>audit_type</b>: Code denoting the source of the change (i.e. press release, web, M&A, Ownership, etc.)</li>
+<li><b>comments</b>: Textaul field containing deal synopsis information where the source of the change is M&A activity</li>
+<li><b>audit_id</b>: Unique identifier that can be used with other data sets to obtain more information about the change</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_cn_names</summary><p><i>This table contains Chinese entity names</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_name_type</b>: Textual description of the name value. Possible values include TRADE_DBA_NAME, LOCAL_NAME, FORMER_NAME, and LEGAL NAME</li>
+<li><b>entity_name_value</b>: This field contains the name that corresponds to the entity_name_type</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_cn_profiles</summary><p><i>This table contains Chinese business descriptions</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_profile_type</b>: Code identifying different types of textual overviews</li>
+<li><b>entity_profile</b>: Textual description of the entity's primary business operations</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_contact</summary><p><i>This table contains additional contact information for entities.  Currently corporate email is the only contact type supported.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>contact_type</b>: Description of the type of contact information provided</li>
+<li><b>contact_value</b>: Contact information for the entity</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_country_props</summary><p><i>This table contains information on countries.</i></p>
+<ul>
+<li><b>prop_id</b>: Unique FactSet-generated identifier assigned to a country property</li>
+<li><b>iso_country</b>: Two-letter code representing a country</li>
+<li><b>country_prop</b>: Textual description of the country designation</li>
+<li><b>country_prop_detail</b>: Detailed description related to the country property, if relevant</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_coverage</summary><p><i>This table contains descriptive data about the entity for the full universe of business entities covered by FactSet. Individuals will be included if they are part of an entity tree.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_name</b>: Name of the entity in generic US ASCII format, used to facilitate searching and sorting</li>
+<li><b>entity_proper_name</b>: Name that the entity is commonly referred to as, normalized and in proper case</li>
+<li><b>primary_sic_code</b>: Four-digit code that identifies the business type of the entity</li>
+<li><b>industry_code</b>: FactSet proprietary industry code assigned to the entity</li>
+<li><b>sector_code</b>: Four-digit code identifying FactSet broad industry sector classification</li>
+<li><b>iso_country_cor_georev</b>: This field represents the entity's country of risk, determined by FactSet and based on an enhanced methodology that leverages the top geo country calculation and additional country risk factors.</li>
+<li><b>entity_sub_type</b>: Two-letter code generally identifying the type of institution, usually within a buy-side or sell-side framework</li>
+<li><b>year_founded</b>: Year the entity was founded</li>
+<li><b>iso_country_incorp</b>: Two-letter code denoting the country where the entity is incorporated</li>
+<li><b>iso_country_cor</b>: Two-letter code representing the entity's country of risk, as determined by FactSet</li>
+<li><b>nace_code</b>: Code representing the NACE class, which is a European standard industry classification system</li>
+<li><b>iso_country_top_georev</b>: This field represents the country where the entity sources its largest revenue using FactSet GeoRev methodology.</li>
+<li><b>iso_country</b>: Two-letter code for the country in which the entity is domiciled. This would be the country that corresponds to the entity's headquarters. For funds the domicile represents where the fund is registered and established.</li>
+<li><b>metro_area</b>: Metropolitan area of the entity's headquarters.</li>
+<li><b>state_province</b>: Two-letter code representing a state or province</li>
+<li><b>zip_postal_code</b>: Postal code of the entity's headquarters</li>
+<li><b>web_site</b>: Web page address for the entity</li>
+<li><b>entity_type</b>: Three-letter code identifying the entity's structure</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_descriptions</summary><p><i>This table contains textual overview of entities including business descriptions.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_profile_type</b>: Code identifying different types of textual overviews</li>
+<li><b>entity_profile</b>: Textual description of the entity's primary business operations</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_identifiers</summary><p><i>This table contains entity level identifiers.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_id_type</b>: Code denoting a type of entity identifier</li>
+<li><b>entity_id_value</b>: Identifier that corresponds with the Entity Identifier Type</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_metro_areas</summary><p><i>This table contains mappings from entities to metro area IDs.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>metro_id</b>: ID that corresponds to the metropolitan area for the entity</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_mkt_val</summary><p><i>This table contains a time series of company market values at the FactSet Entity ID (-E) Level.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>mv_date</b>: Date of the Entity Level Market Value observation</li>
+<li><b>currency</b>: Code representing the currency in which the security or listing trades</li>
+<li><b>ent_mv</b>: Entity Level Market Value including all share types</li>
+<li><b>ent_mv_ex_non_traded</b>: Entity Level Market Value excluding non-traded shares</li>
+<li><b>ent_mv_ex_treasury</b>: Entity Level Market Value excluding treasury shares</li>
+<li><b>ent_mv_ex_non_traded_treasury</b>: Entity Level Market Value excluding non-traded shares and treasury shares</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_naics_rank</summary><p><i>This table contains NAICS 2007 industry classification codes for entities.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>naics_code</b>: Code denoting the NAICS classification</li>
+<li><b>rank</b>: Rank of importance to the entity of the industry represented by the NAICS code</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_names</summary><p><i>This table contains other names that the entity may be referred to as.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_name_type</b>: Textual description of the name value. Possible values include TRADE_DBA_NAME, LOCAL_NAME, FORMER_NAME, and LEGAL NAME</li>
+<li><b>entity_name_value</b>: This field contains the name that corresponds to the entity_name_type</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_profiles</summary><p><i>This table contains textual overviews of entities, including business description, product lines, and investment approach and overview.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_profile_type</b>: Code identifying different types of textual overviews</li>
+<li><b>entity_profile</b>: Textual description of the entity's primary business operations</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_relationships</summary><p><i>This table contains relationships between two entities. Coverage is limited to those companies that report relationships on public annual filings as the data is taken directly from the company filings.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_relation_type</b>: Code denoting the type of relationship that exists between two entities</li>
+<li><b>factset_related_entity_id</b>: Unique FactSet-generated identifier assigned to the related entity</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_status</summary><p><i>This table contains entities that have had a status change.  Bankruptcy is currently the only status change captured in this table.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_status_code</b>: Code denoting the entity's status</li>
+<li><b>start_date</b>: Date that the status became effective</li>
+<li><b>end_date</b>: Date the status was no longer effective</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_str_hist</summary><p><i>This table contains the historical ultimate parent hierarchy relationships.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>start_date</b>: Date the identifier was first associated with the factset_entity_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the factset_entity_id</li>
+<li><b>factset_parent_entity_id</b>: Unique FactSet-generated identifier assigned to the immediate majority owner of the entity's equity</li>
+<li><b>factset_ult_parent_entity_id</b>: Unique FactSet-generated identifier representing the ultimate owner of the entity's equity</li>
+<li><b>depth</b>: The position of the entity within an entity tree 1 = ultimate parent, 2=one level below the ultimate parent, etc.</li>
+<li><b>audit_type</b>: Code denoting the source of the change (i.e. press release, web, M&A, Ownership, etc.)</li>
+<li><b>audit_id</b>: Unique identifier that can be used with other data sets to obtain more information about the change</li>
+</ul></details>
+<details><summary>ent_v1.ent_entity_structure</summary><p><i>This table contains parent hierarchy relationships.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>factset_parent_entity_id</b>: Unique FactSet-generated identifier assigned to the immediate majority owner of the entity's equity</li>
+<li><b>factset_ultimate_parent_entity_id</b>: Unique FactSet-generated identifier assigned to the ultimate parent to which the entity rolls up to</li>
+</ul></details>
+<details><summary>ent_v1.ent_fitch_ids</summary><p><i>This table contains mappings from the FACTSET_ENTITY_ID to the Fitch issuer level identifier.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>fitch_id</b>: Issuer level identifier according to Fitch</li>
+<li><b>fitch_name</b>: Issuer name according to Fitch</li>
+</ul></details>
+<details><summary>ent_v1.ent_moodys_ids</summary><p><i>This table contains mappings from the FACTSET_ENTITY_ID to the Moody's issuer level identifier.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an insider or stakeholder</li>
+<li><b>moodys_id</b>: Issuer level identifier according to Moody's</li>
+<li><b>moodys_name</b>: Issuer name according to Moody's</li>
+</ul></details>
+<details><summary>ent_v1.ent_sp_ids</summary><p><i>This table contains mappings from the FACTSET_ENTITY_ID to the S&P issuer level identifier.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>sp_id</b>: Issuer level identifier according to S&P</li>
+<li><b>sp_name</b>: Issuer name according to S&P</li>
+</ul></details>
+<details><summary>ref_v2.affiliate_type_map</summary><p><i>This table contains a mapping of the codes representing affiliate types to their descriptions.</i></p>
+<ul>
+<li><b>aff_type_code</b>: Code representing the type of relationship between an entity and an affiliated entity</li>
+<li><b>aff_type_desc</b>: Textual description of the relationship</li>
+</ul></details>
+<details><summary>ref_v2.audit_type_map</summary><p><i>This table contains a mapping of the codes representing audit types to their descriptions.</i></p>
+<ul>
+<li><b>audit_type_code</b>: Code representing the source of the change</li>
+<li><b>audit_type_desc</b>: Textual description of the source of the change</li>
+</ul></details>
+<details><summary>ref_v2.country_map</summary><p><i>This table contains a mapping of the ISO country codes to their descriptions, regions and currency.</i></p>
+<ul>
+<li><b>iso_country</b>: Two-letter code representing a country</li>
+<li><b>country_desc</b>: Common name of the country</li>
+<li><b>region_code</b>: One-letter FactSet-generated code representing a global region</li>
+<li><b>iso_currency</b>: Code representing the country's currency</li>
+</ul></details>
+<details><summary>ref_v2.entity_profile_type_map</summary><p><i>This table contains a mapping of the codes representing entity profiles types to their descriptions.</i></p>
+<ul>
+<li><b>entity_profile_type_code</b>: Code representing the profile type</li>
+<li><b>entity_profile_type_desc</b>: Textual description of the profile type</li>
+</ul></details>
+<details><summary>ref_v2.entity_relation_type_map</summary><p><i>This table contains a mapping of the codes representing entity relationship types to their descriptions.</i></p>
+<ul>
+<li><b>entity_relation_type_code</b>: Code representing the type of relationship that exists between two entities</li>
+<li><b>entity_relation_type_desc</b>: Textual description of the relationship type</li>
+</ul></details>
+<details><summary>ref_v2.entity_status_map</summary><p><i>This table contains a mapping of the codes representing entity status to their descriptions.</i></p>
+<ul>
+<li><b>entity_status_code</b>: Code denoting the entity's status</li>
+<li><b>entity_status_desc</b>: Textual description of the entity status</li>
+</ul></details>
+<details><summary>ref_v2.entity_type_map</summary><p><i>This table contains a mapping of the codes representing entity structures to their descriptions.</i></p>
+<ul>
+<li><b>entity_type_code</b>: Code identifying the entity structure</li>
+<li><b>entity_type_desc</b>: Textual description of the entity structure</li>
+</ul></details>
+<details><summary>ref_v2.factset_industry_map</summary><p><i>This table contains a mapping of the codes representing FactSet proprietary industries to their descriptions and FactSet sectors.</i></p>
+<ul>
+<li><b>factset_industry_code</b>: Code representing a FactSet proprietary sector</li>
+<li><b>factset_industry_desc</b>: Textual description of the FactSet proprietary industry</li>
+<li><b>factset_sector_code</b>: Code representing a FactSet proprietary sector</li>
+</ul></details>
+<details><summary>ref_v2.factset_sector_map</summary><p><i>This table contains a mapping of the codes representing FactSet proprietary sectors to their descriptions.</i></p>
+<ul>
+<li><b>factset_sector_code</b>: Code representing a FactSet proprietary sector</li>
+<li><b>factset_sector_desc</b>: Textual description of the FactSet proprietary sector</li>
+</ul></details>
+<details><summary>ref_v2.fref_sec_exchange_map</summary><p><i>This table contains a mapping of the FactSet exchange codes to their descriptions and locations.</i></p>
+<ul>
+<li><b>fref_exchange_code</b>: Code representing the exchange on which the security trades</li>
+<li><b>fref_exchange_desc</b>: Textual description of the security exchange</li>
+<li><b>fref_exchange_location_code</b>: Location code of the exchange on which the security trades.  For exchanges that are regional, this field will return \"AM\" for Americas, \"AP\" for Asia/ Pacific, or \"EU\" for Europe/ Africa.</li>
+<li><b>fref_exchange_market_type</b>: General categorization of a FactSet Exchange Code</li>
+<li><b>iso_mic</b>: Code representing the best fit Mic Exchange code for a given fref_exchange_code. This is the ISO 10383 standard for exchanges and market identification (MIC).</li>
+<li><b>iso_mic_level</b>: Defines the MIC operating level</li>
+</ul></details>
+<details><summary>ref_v2.fref_security_type_map</summary><p><i>This table contains a mapping of the codes representing security types to their descriptions.</i></p>
+<ul>
+<li><b>fref_security_type_code</b>: Code representing the security type</li>
+<li><b>fref_security_type_desc</b>: Textual description of the security type</li>
+<li><b>fref_security_type_long_desc</b>: Definition of the security type</li>
+</ul></details>
+<details><summary>ref_v2.fut_unit_map</summary><p><i>This table contains mappings from fut_unit_code values to their corresponding descriptions.</i></p>
+<ul>
+<li><b>fut_unit_code</b>: Measurement units</li>
+<li><b>fut_unit_desc</b>: Future unit description</li>
+</ul></details>
+<details><summary>ref_v2.iso_currency_map</summary><p><i>This table contains a mapping of the current and historical ISO currency codes to their descriptions.</i></p>
+<ul>
+<li><b>iso_currency</b>: Code representing the currency</li>
+<li><b>currency_desc</b>: Textual description of the currency</li>
+<li><b>active</b>: Flag indicating whether the iso_currency is active (1) or terminated (0)</li>
+</ul></details>
+<details><summary>ref_v2.metro_map</summary><p><i>This table contains a mapping of the codes representing metro areas to their descriptions.</i></p>
+<ul>
+<li><b>metro_code</b>: Code representing a metro area</li>
+<li><b>metro_desc</b>: Textual description of the metro area</li>
+</ul></details>
+<details><summary>ref_v2.nace_classification_map</summary><p><i>This table contains a mapping of the codes representing NACE Rev. 2 codes, which represent the Statistical Classification of Economic Activities in the European Community, to their descriptions.</i></p>
+<ul>
+<li><b>nace_code</b>: Code representing the NACE class, which is a European standard industry classification system</li>
+<li><b>nace_desc</b>: Textual description of the NACE class</li>
+<li><b>nace_group_code</b>: Code representing the NACE group</li>
+<li><b>nace_group_desc</b>: Textual description of the NACE group</li>
+<li><b>nace_division_code</b>: Code representing the NACE division</li>
+<li><b>nace_division_desc</b>: Textual description of the NACE division</li>
+<li><b>nace_section_code</b>: Code representing the NACE section</li>
+<li><b>nace_section_desc</b>: Textual description of the NACE section</li>
+</ul></details>
+<details><summary>ref_v2.naics6_map</summary><p><i>This table contains a mapping of the NAICS 2007 industry classification codes to their descriptions.</i></p>
+<ul>
+<li><b>naics6_code</b>: Code representing the NAICS classification</li>
+<li><b>naics6_desc</b>: Textual description of the NAICS classification</li>
+</ul></details>
+<details><summary>ref_v2.region_map</summary><p><i>This table contains a mapping of the codes representing FactSet proprietary global regions to their descriptions.</i></p>
+<ul>
+<li><b>region_code</b>: One-letter FactSet-generated code representing a global region</li>
+<li><b>region_desc</b>: Textual description of the FactSet proprietary global region</li>
+</ul></details>
+<details><summary>ref_v2.resolution_map</summary><p><i>This table contains a mapping of the codes representing resolution information for address latitude/ longitude coordinates to their descriptions.</i></p>
+<ul>
+<li><b>resolution_code</b>: Code denoting the level of granularity that corresponds to latitude and longitude coordinates</li>
+<li><b>resolution_desc</b>: Textual description of the resolution level</li>
+</ul></details>
+<details><summary>ref_v2.sic_map</summary><p><i>This table contains a mapping of Standard Industrial Classification (SIC) codes to their descriptions.</i></p>
+<ul>
+<li><b>sic_code</b>: Code representing the Standard Industrial Classification (SIC) code which identifies the security's business type</li>
+<li><b>sic_desc</b>: Textual description of the industry that corresponds to the SIC code</li>
+</ul></details>
+<details><summary>ref_v2.state_province_map</summary><p><i>This table contains a mapping of the codes representing states and provinces to their descriptions, countries, and region, if applicable.</i></p>
+<ul>
+<li><b>state_province_code</b>: Two-letter code representing a state or province</li>
+<li><b>state_province_desc</b>: Textual description of the state or province</li>
+<li><b>iso_country</b>: Two-letter code representing a country</li>
+<li><b>region_name</b>: Region where the state or province is located</li>
+</ul></details>
+<details><summary>sym_v1.sym_13f_reportable</summary><p><i>This table contains the list of \"Section 13(f) securities\" as defined by Rule 13f-1(c) per the SEC.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>report_date</b>: Calendar quarter end date that corresponds with the period for which the 13F was filed</li>
+<li><b>status</b>: Code indicating revisions that have made to the list. The word \"ADDED\" indicates that the security has become a Section 13(f) security. The word \"DELETED\" indicates that the security ceases to be a 13(f) security since the date of the last list.</li>
+</ul></details>
+<details><summary>sym_v1.sym_address</summary><p><i>This table contains mappings for Address_IDs published in any Standard DataFeed.</i></p>
+<ul>
+<li><b>address_id</b>: Unique identifier assigned to an entity's location</li>
+<li><b>city_state_postal</b>: City, state and postal code in the entity's address</li>
+<li><b>location_street1</b>: First street line in the entity's address</li>
+<li><b>location_street2</b>: Second street line in the entity's address</li>
+<li><b>location_street3</b>: Third street line in the entity's address</li>
+<li><b>iso_country</b>: Two-letter code representing the country the address is located in</li>
+<li><b>tele_full</b>: Full telephone number tied to an address, including the country code and area code</li>
+<li><b>fax_full</b>: Full fax number, including the country code and area code</li>
+</ul></details>
+<details><summary>sym_v1.sym_bbg</summary><p><i>This table contains FactSet Permanent Identifier (FSYM_ID) to Bloomberg Open Symbology (FIGI) mappings for those securities included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>bbg_id</b>: Bloomberg Open Source Identifier (FIGI) assigned to the security represented by the FS_PERM_SEC_ID</li>
+<li><b>bbg_ticker</b>: Bloomberg ticker assigned to the security</li>
+<li><b>most_recent</b>: Flag indicating whether the identifier is the most recent for the security</li>
+</ul></details>
+<details><summary>sym_v1.sym_bbg_exchange_map</summary><p><i>This table contains Bloomberg exchange and composite descriptions.</i></p>
+<ul>
+<li><b>bbg_exchange_code</b>: Bloomberg Exchange Code</li>
+<li><b>bbg_exchange_name</b>: Bloomberg Exchange Name</li>
+</ul></details>
+<details><summary>sym_v1.sym_coverage</summary><p><i>This table contains reference data on the securities and listings in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: A unique FactSet generated identifier assigned to a security.</li>
+<li><b>currency</b>: Code representing the currency in which the security or listing trades</li>
+<li><b>proper_name</b>: Name of the security associated with the identifier</li>
+<li><b>fsym_primary_equity_id</b>: FactSet Permanent Identifier representing the primary equity on the identifier's most liquid exchange</li>
+<li><b>security_flag</b>: Flag indicating that the identifier represents a security</li>
+<li><b>fsym_regional_id</b>: Regional-level FactSet Permanent Identifier associated with the identifier</li>
+<li><b>fsym_security_id</b>: Security-level FactSet Permanent Identifier associated with the identifier</li>
+<li><b>universe_type</b>: Code denoting whether the security is considered equity (EQ) or fixed income (FI) by FactSet Symbology</li>
+<li><b>fsym_primary_listing_id</b>: Most liquid individual listing for a currency and country or security</li>
+<li><b>active_flag</b>: Flag indicating whether the record is currently active (1) or inactive (0). Please note that this field is not supported for bank loans; therefore null values represent \"unknown\".</li>
+<li><b>fref_security_type</b>: Code denoting the security's type</li>
+<li><b>fref_listing_exchange</b>: Code denoting the exchange on which the security trades</li>
+<li><b>listing_flag</b>: Flag indicating that the identifier represents an individual listing</li>
+<li><b>regional_flag</b>: Flag indicating that the identifier represents the most liquid listing for a specific currency and country</li>
+</ul></details>
+<details><summary>sym_v1.sym_credit_parent_hist</summary><p><i>This table contains the historical credit parent history per securities in our FactSet Security Master</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>factset_cred_parent_entity_id</b>: FactSet Entity Identifier representing the Credit Parent for the security at a single point in time</li>
+</ul></details>
+<details><summary>sym_v1.sym_cusip</summary><p><i>This table contains CUSIP to FactSet Permanent Identifier (FSYM_ID) mappings for those securities included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>cusip</b>: Current, or most recent CUSIP assigned to the security.</li>
+</ul></details>
+<details><summary>sym_v1.sym_cusip_hist</summary><p><i>This table contains historical CUSIP to FactSet Permanent Identifier (FSYM_ID) mappings for equity only securities included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>cusip</b>: Unique nine-character identifier assigned to a security</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>most_recent</b>: Flag indicating whether the identifier is the most recent for the security</li>
+</ul></details>
+<details><summary>sym_v1.sym_entity</summary><p><i>This table contains FactSet Entity Identifier (FactSet_Entity_ID) mappings for entities supported by FactSet.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_proper_name</b>: Name that the entity is commonly referred to as, normalized and in proper case</li>
+<li><b>iso_country</b>: Two-letter code representing the country in which the entity is domiciled. This corresponds to the country of the company's headquarters.</li>
+<li><b>entity_type</b>: Three-letter code identifying the entity's structure</li>
+</ul></details>
+<details><summary>sym_v1.sym_entity_sector</summary><p><i>This table contains FactSet Entity Identifier (FactSet_Entity_ID) to sector and industry classification mappings.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>primary_sic_code</b>: Four-digit code that identifies the business type of the entity</li>
+<li><b>industry_code</b>: FactSet proprietary industry code assigned to the entity</li>
+<li><b>sector_code</b>: Four-digit code identifying FactSet broad industry sector classification</li>
+</ul></details>
+<details><summary>sym_v1.sym_entity_sector_rbics</summary><p><i>This table contains the current FactSet Entity Identifier (FactSet_Entity_ID) to RBICS sector (level 2) mappings.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>l2_id</b>: RBICS level 2 identifier</li>
+<li><b>focus_flag</b>: Flag indicating whether the company exists in the RBICS Focus universe</li>
+</ul></details>
+<details><summary>sym_v1.sym_futures_contract</summary><p><i>This table contains the master list of idenitifers  and contract level data for global futures contracts, including continuous contracts.</i></p>
+<ul>
+<li><b>fsym_fut_id</b>: Unique FactSet generated identifier for a futures contract</li>
+<li><b>root</b>: Root symbol</li>
+<li><b>exchange_root</b>: Denotes the specific root identifier of a futures product exchange root</li>
+<li><b>fref_exchange_code</b>: Code representing the exchange on which the security trades</li>
+<li><b>session_flag</b>: Code indicating the trading session. Possible values include:  D = day/pit;  N =evening/electronic; C = composite</li>
+<li><b>contract_year</b>: Year of the contract delivery; 0 indicates continuous contract</li>
+<li><b>contract_month</b>: Month of the contract delivery; 0 indicates continuous contract</li>
+<li><b>exp_date</b>: Last day the contract can trade</li>
+</ul></details>
+<details><summary>sym_v1.sym_futures_root</summary><p><i>This table contains the master list of root tickers and root level data for global futures.</i></p>
+<ul>
+<li><b>root</b>: Root symbol</li>
+<li><b>root_name</b>: Root Description</li>
+<li><b>category</b>: Textual description of the type of futures contract. Possible values include: Energy, Foods and Materials, Grains, Livestock, Metals, Currency, Indexes, Interest, Rates</li>
+<li><b>contract_size</b>: Size of the contract</li>
+<li><b>fut_unit_code</b>: Measurement units</li>
+<li><b>fref_exchange_code</b>: Code representing the exchange on which the security trades</li>
+<li><b>currency</b>: Currency of the futures product</li>
+<li><b>delisted_root_flag</b>: Flag indicating if the root has been delisted</li>
+<li><b>tick_value</b>: Minimum price movement in monetary terms usually a function of the lot size</li>
+<li><b>settle_method</b>: Denoting if cash or physical</li>
+<li><b>delivery_months</b>: Array returning the delivery months</li>
+</ul></details>
+<details><summary>sym_v1.sym_isin</summary><p><i>This table contains ISIN to FactSet Permanent Identifier (FSYM_ID) mappings for those securities included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>isin</b>: ISIN assigned to a security</li>
+</ul></details>
+<details><summary>sym_v1.sym_isin_hist</summary><p><i>This table contains historical FSYM_ID to ISIN mappings</i></p>
+<ul>
+<li><b>isin</b>: ISIN assigned to a security</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>most_recent</b>: Flag indicating whether the identifier is the most recent for the security</li>
+</ul></details>
+<details><summary>sym_v1.sym_legacy_entity_id</summary><p><i>This table contains mapping of legacy entity identifiers that can be found in legacy or custom feeds to the alpha numeric FACTSET_ENTITY_ID used in Standard DataFeed packages.</i></p>
+<ul>
+<li><b>legacy_entity_id</b>: Legacy FactSet-generated identifier assigned to an entity or an individual</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>sym_v1.sym_legacy_perm_id</summary><p><i>This table contains mappings from legacy FactSet security permanent identifiers to the new FSYM identifiers.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>fs_perm_sec_id</b>: Unique FactSet-generated identifier assigned to a security. This is the legacy FactSet Permanent Identifier.</li>
+</ul></details>
+<details><summary>sym_v1.sym_merged_entity_id</summary><p><i>This table contains any FactSet Entity or People identifiers (ending in \"-E\") that have been duplicated, and as a result have been merged into other FactSet Entity or People Identifiers. Complete history is provided.</i></p>
+<ul>
+<li><b>merged_factset_entity_id</b>: Identifier that has been merged away</li>
+<li><b>to_factset_entity_id</b>: Identifier that the merged identifier has been merged into</li>
+<li><b>merge_date</b>: Date on which the identifier was merged</li>
+</ul></details>
+<details><summary>sym_v1.sym_merged_fsym_id</summary><p><i>This table contains FSYM_IDs that have been duplicated, and as a result have been merged into other FSYM_IDs. History up to 01-JAN-2015 is provided.</i></p>
+<ul>
+<li><b>merged_fsym_id</b>: FactSet Permanent Identifier that has been merged away</li>
+<li><b>to_fsym_id</b>: FactSet Permanent Identifier that has been merged into</li>
+<li><b>merge_date</b>: Date on which the identifiers were merged</li>
+<li><b>unmerge_date</b>: Date on which the identifiers were unmerged. Both identifiers are considered valid again on this date.</li>
+</ul></details>
+<details><summary>sym_v1.sym_options</summary><p><i>This table contains metadata for active and inactive options contracts such as expiration date and strike price.</i></p>
+<ul>
+<li><b>fsym_opt_id</b>: FactSet-generated symbol for Option</li>
+<li><b>fsym_underlying_id</b>: Unique FactSet-generated identifier representing a regional level instrument</li>
+<li><b>underlying_ticker</b>: Exchange ticker assigned to the listing.</li>
+<li><b>currency</b>: Code representing the currency in which the security or listing trades</li>
+<li><b>opra_id</b>: Options Price Reporting Authority (OPRA) symbol</li>
+<li><b>occ_id</b>: Options Clearing Corporation (OCC) symbol</li>
+<li><b>exp_style</b>: Option expiration style. Either AMERICAN or EUROPEAN</li>
+<li><b>exp_frequency</b>: Interval of expiration. For example, D stands for Daily Expiration.</li>
+<li><b>trading_venue_code</b>: Bourse code for where the option trades</li>
+<li><b>fref_exchange_code</b>: Code representing the exchange on which the security trades</li>
+<li><b>active_flag</b>: Flag indicating whether the contract is active or not</li>
+<li><b>option_type_code</b>: Indicates whether option type is equity (1), ETF (12 or 99), Futures (60), FX (19), or Index (2)</li>
+<li><b>put_call_indicator</b>: Indicates whether option is put or call</li>
+<li><b>contract_size</b>: Size of the contract</li>
+<li><b>strike_price</b>: Stated price per share. Underlying stock may be purchased (for call) or sold (for put) by option holder upon exercise of contract.</li>
+<li><b>settle_method</b>: Denoting if PHYSICAL or CASH</li>
+<li><b>exp_date</b>: Last day the contract can trade</li>
+</ul></details>
+<details><summary>sym_v1.sym_region</summary><p><i>This table contains the package region for securities and listings in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>region</b>: Package Region</li>
+</ul></details>
+<details><summary>sym_v1.sym_registered</summary><p><i>This table contains linking between Registered, 144a, RegS, and RegD instrument identifiers so that credit exposure can be analyzed at the security or \"obligation\" level.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>is_144a</b>: Flag indicating that the security is a Rule 144A offering</li>
+<li><b>is_regs</b>: Flag indicating that the security is a Reg S offering</li>
+<li><b>is_regd</b>: Flag indicating that the security is a Reg D offering, where the offering is limited to \"accredited investors</li>
+<li><b>is_reg</b>: Flag indicating that the security is registered with the SEC</li>
+<li><b>issue_date</b>: Date of issuance for the instrument</li>
+<li><b>linked_id</b>: Unique identifier used to link registered instruments together</li>
+</ul></details>
+<details><summary>sym_v1.sym_retired_entity_ids</summary><p><i>This table contains the current FactSet Entity Identifier (FactSet_Entity_ID) to RBICS sector (level 2) mappings.</i></p>
+<ul>
+<li><b>retired_factset_entity_id</b>: Unique FactSet-generated identifier an entity that will be retired</li>
+<li><b>surviving_factset_entity_id</b>: Unique FactSet-generated identifier an entity that will survive</li>
+</ul></details>
+<details><summary>sym_v1.sym_sec_entity</summary><p><i>This table contains FactSet Permanent Identifier (FSYM_ID) to FactSet Entity Identifier (FactSet_Entity_ID) mappings for those securities included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>sym_v1.sym_sec_entity_hist</summary><p><i>This table contains historical and current FactSet Permanent Identifier (FSYM_ID) to FactSet Entity Identifier (FACTSET_ENTITY_ID) mappings, with dates, for all equities included in the Symbology universe. These mappings are provided for equity securities at the security FSYM_ID level.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>sym_v1.sym_sec_regulatory</summary><p><i>This table contains the FSYM_ID and CIC (Complementary Identification Code) for a given identifier.  CIC codes are a four position code used to classify assets for Solvency II reporting.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>cic_code</b>: Code representing the primary security's Complementary Identification Code (CIC), which is used to classify assets for Solvency II reporting</li>
+</ul></details>
+<details><summary>sym_v1.sym_sedol</summary><p><i>This table contains SEDOL to FactSet Permanent Identifier (FSYM_ID) mappings for those listings included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>sedol</b>: Seven-character identification code assigned to securities that trade on the London Stock Exchange and various smaller exchanges in the United Kingdom</li>
+</ul></details>
+<details><summary>sym_v1.sym_sedol_hist</summary><p><i>This table contains historical SEDOL to FactSet Permanent Identifier (FSYM_ID) mappings for equity only listings included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>sedol</b>: Seven-character identification code assigned to securities that trade on the London Stock Exchange and various smaller exchanges in the United Kingdom</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>most_recent</b>: Flag indicating whether the identifier is the most recent for the security</li>
+</ul></details>
+<details><summary>sym_v1.sym_ticker_exchange</summary><p><i>This table contains exchange specific ticker to FactSet Permanent Identifier (FSYM_ID) mappings for those listings included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>ticker_exchange</b>: Exchange ticker assigned to the listing. The ticker is appended with the exchange code that corresponds to the exchange on which the listing trades.</li>
+</ul></details>
+<details><summary>sym_v1.sym_ticker_exchange_hist</summary><p><i>This table contains the historic exchange specific ticker to FactSet Permanent Identifier (FSYM_ID) mappings included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>ticker_exchange</b>: Exchange ticker assigned to the listing. The ticker is appended with the exchange code that corresponds to the exchange on which the listing trades.</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>most_recent</b>: Flag indicating whether the identifier is the most recent for the security</li>
+</ul></details>
+<details><summary>sym_v1.sym_ticker_region</summary><p><i>This table contains regional ticker to FactSet Permanent Identifier (FSYM_ID) mappings for those listings included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>ticker_region</b>: Current or most recent regional ticker assigned to the listing. The ticker is appended with the two digit code that corresponds to the county or region in which the listing trades.</li>
+</ul></details>
+<details><summary>sym_v1.sym_ticker_region_hist</summary><p><i>This table contains the historic regional ticker to FactSet Permanent Identifier (FSYM_ID) mappings included in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>ticker_region</b>: Regional ticker assigned to the regional perm id. The ticker is appended with the ISO Country code that corresponds to the country in which the security trades.</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>most_recent</b>: Flag indicating whether the identifier is the most recent for the security</li>
+</ul></details>
+<details><summary>sym_v1.sym_wkn</summary><p><i>This table contains WKN to FactSet Permanent Identifier (FSYM_ID) mapping for those listed in the included FactSet Symbology universe</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>wkn</b>: The Wertpapierkennnummer, (WKN, WPKN, WPK or simply Wert), is a German securities identification code. It is composed of six digits or capital letters (excluding I and O), and no check digit.</li>
+</ul></details>
+        </div>
+		
+		<div id="ownershipTableSection" class="hide">
+    <h4 id="ownershipTableName">Tables in Ownership</h4>
+    <details><summary>own_v5.own_sec_entity</summary><p><i>This table contains equity FactSet Permanent Identifier (FSYM_ID) to FactSet Entity Identifier (FactSet_Entity_ID) mappings for those securities included in the FactSet Ownership universe. These mappings are provided at the security-level.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>own_v5.own_con_asset_type_coverage</summary><p><i>This table contains current and historical asset type coverage for job functions from the own_con_job_functions table that involve covering securities.</i></p>
+<ul>
+<li><b>job_id</b>: Unique number identifying each job. A job corresponds to a distinct position at one company. A person can have more than one active job (for example, a person that sits on the board of two companies) and a job can have multiple job functions.</li>
+<li><b>job_function_code</b>: Code representing a specific job name and responsibility</li>
+<li><b>ppl_specialization_code</b>: Code representing the area of specialization (i.e. Mid Cap, Derivatives, Convertibles)</li>
+<li><b>ppl_region_code</b>: Code representing a FactSet proprietary global region. This denotes the region that the job covers.</li>
+<li><b>ppl_asset_type_code</b>: Code representing the asset type</li>
+<li><b>inception_date</b>: Start date of position (NULL if unknown)</li>
+<li><b>termination_date</b>: Date on which the position ended (NULL if unknown)</li>
+<li><b>active</b>: Flag indicating whether the record is active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_con_bio</summary><p><i>This table contains biographical information on a person.</i></p>
+<ul>
+<li><b>factset_person_id</b>: Unique FactSet-generated identifier assigned to an individual</li>
+<li><b>bio</b>: Textual biography of the individual</li>
+</ul></details>
+<details><summary>own_v5.own_con_board_comm</summary><p><i>This table contains current board committee membership for job functions from the own_con_job_functions table that involve board membership.</i></p>
+<ul>
+<li><b>job_id</b>: Unique number identifying each job. A job corresponds to a distinct position at one company. A person can have more than one active job (for example, a person that sits on the board of two companies) and a job can have multiple job functions.</li>
+<li><b>job_function_code</b>: Code representing a specific job name and responsibility</li>
+<li><b>ppl_board_comm_code</b>: Code representing the type of board committee that a person is a member of. Lookup in the ppl_board_committee_map mapping file.</li>
+<li><b>inception_date</b>: Start date of position (NULL if unknown)</li>
+<li><b>termination_date</b>: Date on which the position ended (NULL if unknown)</li>
+<li><b>active</b>: Flag indicating whether the record is active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_con_bus_region_coverage</summary><p><i>This table contains current business (industry or sector) and region coverage for job functions from the own_con_job_functions table that involve covering securities.</i></p>
+<ul>
+<li><b>job_id</b>: Unique number identifying each job. A job corresponds to a distinct position at one company. A person can have more than one active job (for example, a person that sits on the board of two companies) and a job can have multiple job functions.</li>
+<li><b>job_function_code</b>: Code representing a specific job name and responsibility</li>
+<li><b>ppl_bus_code</b>: FactSet proprietary code representing the industry or sector that a job covers</li>
+<li><b>ppl_region_code</b>: Code representing a FactSet proprietary global region. This denotes the region that the job covers.</li>
+<li><b>inception_date</b>: Start date of position (NULL if unknown)</li>
+<li><b>termination_date</b>: Date on which the position ended (NULL if unknown)</li>
+<li><b>active</b>: Flag indicating whether the record is active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_con_job_functions</summary><p><i>This table contains specific current functions the individual performs.</i></p>
+<ul>
+<li><b>job_id</b>: Unique number identifying each job. A job corresponds to a distinct position at one company. A person can have more than one active job (for example, a person that sits on the board of two companies) and a job can have multiple job functions.</li>
+<li><b>job_function_code</b>: Code representing a specific job name and responsibility</li>
+<li><b>inception_date</b>: Start date of position (NULL if unknown)</li>
+<li><b>termination_date</b>: Date on which the position ended (NULL if unknown)</li>
+<li><b>active</b>: Flag indicating whether the record is active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_con_jobs</summary><p><i>This table contains basic information relating to specific current employment records for buy-side and sell-side contacts. The information can be either professional or educational experiences.</i></p>
+<ul>
+<li><b>job_id</b>: Unique number identifying each job. A job corresponds to a distinct position at one company. A person can have more than one active job (for example, a person that sits on the board of two companies) and a job can have multiple job functions.</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing the organization of employment</li>
+<li><b>factset_person_id</b>: Unique FactSet-generated identifier assigned to an individual</li>
+<li><b>address_id</b>: Unique identifier assigned to an entity's location</li>
+<li><b>department</b>: Division of the organization in which the individual works</li>
+<li><b>email</b>: E-mail address of the individual</li>
+<li><b>direct_telephone</b>: Direct telephone number of the individual, if available, otherwise the number of the headquarters is returned</li>
+<li><b>inception_date</b>: Start date of position (NULL if unknown)</li>
+<li><b>termination_date</b>: Date on which the position ended (NULL if unknown)</li>
+<li><b>active</b>: Flag indicating whether the record is active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_con_names</summary><p><i>This table contains presentation name for a person.</i></p>
+<ul>
+<li><b>factset_person_id</b>: Unique FactSet-generated identifier assigned to an individual</li>
+<li><b>people_name_type</b>: Textual description of the name value</li>
+<li><b>people_name_value</b>: Name that corresponds to the given name type</li>
+</ul></details>
+<details><summary>own_v5.own_con_people</summary><p><i>This table contains basic information relating to an individual's attributes such as name, suffix, and birth date.</i></p>
+<ul>
+<li><b>factset_person_id</b>: Unique FactSet-generated identifier assigned to an individual</li>
+<li><b>full_name</b>: Full name of the individual. This field concatenates the individual's First Name, Middle Name, Last Name and Suffix.</li>
+<li><b>first_name</b>: First name of the individual</li>
+<li><b>middle_name</b>: Middle name or initial of the individual</li>
+<li><b>last_name</b>: Last name of the individual</li>
+<li><b>salutation</b>: Honorific for an individual</li>
+<li><b>suffix_gen</b>: Generational suffix designations</li>
+<li><b>suffix_prof</b>: Professional suffix designations</li>
+<li><b>birth_year</b>: Year of birth for an individual</li>
+<li><b>birth_month</b>: Month of birth for an individual</li>
+</ul></details>
+<details><summary>own_v5.own_con_portfolios</summary><p><i>This table contains current and historical funds managed by individual portfolio managers.</i></p>
+<ul>
+<li><b>portfolio_key</b>: Unique identifier assigned to a distinct combination of fund and portfolio manager</li>
+<li><b>job_id</b>: Unique number identifying each job. A job corresponds to a distinct position at one company. A person can have more than one active job (for example, a person that sits on the board of two companies) and a job can have multiple job functions.</li>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>inception_date</b>: Start date of position (NULL if unknown)</li>
+<li><b>termination_date</b>: Date on which the position ended (NULL if unknown)</li>
+<li><b>active</b>: Flag indicating whether the record is active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_con_titles</summary><p><i>This table contains current and historical titles held by an individual.</i></p>
+<ul>
+<li><b>title_key</b>: Number identifying a unique combination of person and title</li>
+<li><b>factset_person_id</b>: Unique FactSet-generated identifier assigned to an individual</li>
+<li><b>job_id</b>: Unique number identifying each job. A job corresponds to a distinct position at one company. A person can have more than one active job (for example, a person that sits on the board of two companies) and a job can have multiple job functions.</li>
+<li><b>title</b>: Title signifying the individual's professional, social, or academic qualification</li>
+<li><b>inception_date</b>: Start date of position (NULL if unknown)</li>
+<li><b>termination_date</b>: Date on which the position ended (NULL if unknown)</li>
+<li><b>active</b>: Flag indicating whether the record is active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_ent_13f_combined_inst</summary><p><i>This table contains those institutions that FactSet LionShares has designated aggregate management entities for specific 13F filers.  The FactSet_Filer_Entity_ID represents those institutions that LionShares \"rolls-up\" under its appropriate aggregate institution (FactSet_Rollup_Entity_ID).</i></p>
+<ul>
+<li><b>factset_filer_entity_id</b>: Unique FactSet-generated identifier assigned to the institution that has filed the 13F</li>
+<li><b>factset_rollup_entity_id</b>: Unique FactSet-generated identifier assigned to the aggregate management entity for the specific 13F filer (FactSet_Filer_Entity_ID)</li>
+<li><b>active</b>: Flag indicating whether the relationship is considered active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_ent_13f_filing_hist</summary><p><i>This table contains information on historical 13F filings, including filing date and transfer date. Active and terminated filers are included.</i></p>
+<ul>
+<li><b>factset_13f_filer_entity_id</b>: Unique FactSet generated identifier assigned to a specific 13F filer</li>
+<li><b>form_type</b>: Type of filing denoting the nature of the disclosure</li>
+<li><b>report_date</b>: Calendar quarter end date that corresponds with the period for which the 13F was filed</li>
+<li><b>transfer_date</b>: Date on which the data was processed by FactSet</li>
+<li><b>filing_date</b>: Date on which the form was filed</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing the managing institution that the filer (FactSet_13F_FILER_ID) rolls up to under FactSet methodology</li>
+</ul></details>
+<details><summary>own_v5.own_ent_13f_subfiler_inst</summary><p><i>This table contains those institutions that FactSet has broken out from a 13F filing.</i></p>
+<ul>
+<li><b>factset_subfiler_entity_id</b>: Unique FactSet-generated identifier assigned to an institution that has reported holdings through the 13F filing of another institution</li>
+<li><b>factset_filer_entity_id</b>: Unique FactSet-generated identifier assigned to the institution that has filed the 13F</li>
+<li><b>active</b>: Flag indicating whether the relationship is considered active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_ent_address</summary><p><i>This table contains address information for entity locations. Headquarters and secondary office locations are included.</i></p>
+<ul>
+<li><b>address_id</b>: Unique identifier assigned to an entity's location</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>own_v5.own_ent_coverage</summary><p><i>This table contains entity level coverage information for those entities included in the Ownership DataFeed packages.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>is_issuer</b>: Flag to denote if the FactSet_Entity_Id exists as issuer</li>
+<li><b>is_fund</b>: Flag to denote if the FactSet_Entity_Id exists as fund</li>
+<li><b>is_inst</b>: Flag to denote if the FactSet_Entity_Id exists as institution</li>
+<li><b>is_stakeholder</b>: Flag to denote if the FactSet_Entity_Id exists as stakeholder</li>
+<li><b>is_uksr_holder</b>: Flag to denote if the FactSet_Entity_Id exists as USKR holder</li>
+<li><b>is_uksr_bo_holder</b>: Flag to denote if the FactSet_Entity_Id exists as UKSR beneficial owner</li>
+<li><b>is_contact</b>: Flag to denote if the FactSet_Entity_Id exists as contact</li>
+</ul></details>
+<details><summary>own_v5.own_ent_fund_filing_hist</summary><p><i>This table contains information on historical fund filings, including filing date and transfer date. Active and terminated filers are included. The FILING_DATE field is only supported as of July 2014, so prior to this date the FILING_DATE is set to the REPORT_DATE.</i></p>
+<ul>
+<li><b>total_reported_mv</b>: The reported share amount multiplied by the reported share price, represented in USD.</li>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>form_type</b>: Source of the form information. 'OTH' indicates a direct report from a fund and 'REG' indicates a regulatory filing.</li>
+<li><b>report_date</b>: Period end date on which the holdings were valid</li>
+<li><b>transfer_date</b>: Date on which the data was processed by FactSet</li>
+<li><b>filing_date</b>: Date that the fund filed or reported to FactSet. The Filing Date is only supported as of July 2014, before which the Filing Date will be equal to the Report Date.</li>
+</ul></details>
+<details><summary>own_v5.own_ent_fund_identifiers</summary><p><i>This table contains mappings from FSYM_IDs to FactSet_Fund_IDs. Active and terminated funds are included.</i></p>
+<ul>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>fund_ticker</b>: Ticker assigned to the fund</li>
+<li><b>fund_identifier</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>identifier_type</b>: Type of identifier corresponding to the Fund Identifier</li>
+<li><b>active</b>: Flag indicating whether the record is active (1) or inactive (0)</li>
+</ul></details>
+<details><summary>own_v5.own_ent_fund_managers</summary><p><i>This table contains mappings from funds to their institutional managers. The primary institutional manager could be found in the own_funds table.</i></p>
+<ul>
+<li><b>factset_inst_entity_id</b>: Unique FactSet-generated identifier assigned to the institution that manages the fund</li>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+</ul></details>
+<details><summary>own_v5.own_ent_fund_objectives</summary><p><i>This table contains investment objective information for funds.</i></p>
+<ul>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>invt_obj_code</b>: Code representing the type of fund (i.e. Equity, Fixed Income, Balanced etc.)</li>
+<li><b>invt_obj_bus_code</b>: Code representing the sector/industry the fund specializes in</li>
+<li><b>invt_obj_specialization_code</b>: Code representing the specialization in coverage for a fund (i.e. Mid Cap, Derivatives, Convertibles)</li>
+<li><b>invt_obj_asset_type_code</b>: Code indicating the type of asset covered by the fund (i.e. Equity, Fixed Income)</li>
+<li><b>invt_obj_region_code</b>: One-letter code representing the fund's primary region of focus for investing</li>
+<li><b>invt_obj_country_code</b>: Two-letter code representing the fund's primary country of focus for investing</li>
+</ul></details>
+<details><summary>own_v5.own_ent_funds</summary><p><i>This table contains information on funds for which FactSet has holdings data. Terminated and active funds are included.</i></p>
+<ul>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>factset_inst_entity_id</b>: Unique FactSet-generated identifier assigned to the institution that manages the fund</li>
+<li><b>fund_type</b>: Three-letter code identifying the fund's structure</li>
+<li><b>current_report_date</b>: Date on which the fund's portfolio was most recently processed by FactSet</li>
+<li><b>style</b>: Fund's investment style, inferred from its portfolio's constituents</li>
+<li><b>turnover_label</b>: Level of turnover, determined by dividing the average transactions by the market value of the portfolio</li>
+<li><b>beta</b>: Fund's average beta, calculated from the portfolio's constituents</li>
+<li><b>fund_family</b>: Fund family that the fund is considered a part of. Please note that this field is only supported for funds domiciled in the U.S. and Canada.</li>
+<li><b>etf_type</b>: Type of replication for an ETF. This field determines if the fund holds securities for the index (Physical) or is it exposed to the index it tracks using derivatives (Synthetic).</li>
+<li><b>active_flag</b>: Flag indicating whether the fund is considered active(1) or inactive (0). A flag will be considered inactive if it is known by FactSet to be liquidated. A fund will be considered active if FactSet actively collects holdings data, or if the fund is still considered active in the market but FactSet does not collect holdings.</li>
+<li><b>pe_ratio</b>: Fund's price to earnings average, calculated from the portfolio's constituents</li>
+<li><b>pb_ratio</b>: Fund's price to book average, calculated from the portfolio's constituents</li>
+<li><b>dividend_yield</b>: Fund's dividend yield average, calculated from the portfolio's constituents</li>
+<li><b>sales_growth</b>: Fund's sales growth average, calculated from the portfolio's constituents</li>
+<li><b>price_momentum</b>: Fund's price momentum average, calculated from the portfolio's constituents</li>
+<li><b>relative_strength</b>: Fund's relative strength average, calculated from the portfolio's constituents</li>
+</ul></details>
+<details><summary>own_v5.own_ent_funds_feeder_master</summary><p><i>This table contains relationships between feeder funds and their master funds.</i></p>
+<ul>
+<li><b>factset_feeder_fund_id</b>: Unique FactSet-generated identifier assigned to a fund that represents a feeder fund</li>
+<li><b>factset_master_fund_id</b>: Unique FactSet-generated identifier assigned to a fund that represents a master fund</li>
+</ul></details>
+<details><summary>own_v5.own_ent_inst_identifiers</summary><p><i>This table contains mappings from Central Registration Depository (CRD) identifiers maintain by FINRA to FactSet's FactSet_Entity_ID.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_id_type</b>: Code denoting a type of entity identifier</li>
+<li><b>entity_id_value</b>: Identifier that corresponds with the Entity Identifier Type</li>
+</ul></details>
+<details><summary>own_v5.own_ent_inst_profiles</summary><p><i>This table contains textual overviews of institutions, including investment approach and overview.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_profile_type</b>: Code identifying different types of textual overviews</li>
+<li><b>entity_profile</b>: Textual description of the entity's primary business operations</li>
+</ul></details>
+<details><summary>own_v5.own_ent_institutions</summary><p><i>This table contains ownership related institutional level data.  Terminated and active institutions are included.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>current_report_date</b>: Date of the most recent holdings report, based first on the availability of the 13F, then on the availability of the mutual fund portfolio, and finally on the stakes date.</li>
+<li><b>style</b>: Description of the holder's investment style based on the underlying holdings</li>
+<li><b>manager_style</b>: Stated style of the institution as researched and analyzed by FactSet</li>
+<li><b>turnover_label</b>: Level of turnover, determined by dividing the average transactions by the market value of the portfolio</li>
+<li><b>total_aum</b>: Institution's current total assets under management represented in USD(in millions). This data item is pulled directly from a source.  It is not derived by FactSet using holdings data.</li>
+<li><b>entity_sub_type</b>: Two-letter code generally identifying the type of institution, usually within a buy-side or sell-side framework</li>
+<li><b>fds_13f_flag</b>: Flag indicating if the institution is a 13F filer according to FactSet methodology and has an active/current 13F filing</li>
+</ul></details>
+<details><summary>own_v5.own_float_current</summary><p><i>This table contains current float information. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>as_of_date</b>: Current date</li>
+<li><b>float_shares</b>: Float shares, or shares available to the public. Float is calculated by subtracting the sum of the positions reported by all insider/stakeholders over the course of the calendar quarter from the number of shares outstanding as of the quarter end.</li>
+<li><b>float_mv</b>: Total market value of the float shares in USD. Float market value is calculated by multiplying the float shares for the calendar quarter by the price as of the calendar quarter end.</li>
+<li><b>float_pct_os</b>: Float shares for the calendar quarter as a percent of shares outstanding as of the quarter end for a security identifier</li>
+</ul></details>
+<details><summary>own_v5.own_float_hist</summary><p><i>The table contains historical float data for equity securities, available on a calendar quarterly basis. Active and terminated securities are included. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>as_of_date</b>: Month end date</li>
+<li><b>float_shares</b>: Float shares, or shares available to the public. Float is calculated by subtracting the sum of the positions reported by all insider/stakeholders over the course of the calendar quarter from the number of shares outstanding as of the quarter end.</li>
+<li><b>float_mv</b>: Total market value of the float shares in USD. Float market value is calculated by multiplying the float shares for the calendar quarter by the price as of the calendar quarter end.</li>
+<li><b>float_pct_os</b>: Float shares for the calendar quarter as a percent of shares outstanding as of the quarter end for a security identifier</li>
+</ul></details>
+<details><summary>own_v5.own_fund_detail</summary><p><i>This table contains historical fund holdings in securities for all active and terminated funds. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>adj_holding</b>: Share amount held by the fund as of the report date, adjusted for corporate actions</li>
+<li><b>adj_mv</b>: Total share amount multiplied by the latest month-end share price, adjusted for corporate actions as per FactSet's methodology, represented in USD.</li>
+<li><b>reported_holding</b>: Share amount held by the fund as reported in the source</li>
+<li><b>reported_mv</b>: Market value held by the fund as reported in the source, represented in USD.</li>
+</ul></details>
+<details><summary>own_v5.own_fund_generic</summary><p><i>This table contains a summary of generic positions where security level detail is not available.</i></p>
+<ul>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>generic_id</b>: Code representing a security type or group of security types under which holdings can be aggregated</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>reported_mv</b>: Aggregated as-reported market value for the generic position</li>
+</ul></details>
+<details><summary>own_v5.own_fund_generic_summary_fi</summary><p><i>This table contains a summary of all fixed income security level detail and collected generic positions. This table should be used by Equity only clients to view aggregated Fixed Income holdings.</i></p>
+<ul>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>generic_id</b>: Code representing a security type or group of security types under which holdings can be aggregated</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>reported_mv</b>: Aggregated as-reported market value for the generic position</li>
+</ul></details>
+<details><summary>own_v5.own_insider_trans</summary><p><i>This table contains insider and stakeholder transaction data for equity securities.  Active and terminated securities are included. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an insider or stakeholder</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>sec_accession_number</b>: Unique identifier of the filing</li>
+<li><b>trade_number</b>: Identifies a distinct transaction within a single filing</li>
+<li><b>reported_title</b>: Insider's job title per the sourced filing</li>
+<li><b>tran_shares</b>: As-reported (unadjusted) number of shares acquired or disposed</li>
+<li><b>exercise_date</b>: Date on which any options were exercised</li>
+<li><b>rule_10b5_1</b>: Flag indicating whether the transaction is tagged as a Rule 10b5-1 transaction. Rule 10b5-1 relaxes certain impediments imposed by insider trading law by providing insiders with a limited means of trading even when they possess material, non-public information.</li>
+<li><b>tran_date</b>: Date that the transaction was added or modified in the database</li>
+<li><b>effective_date</b>: Effective date of the transaction. This corresponds to the \"Transaction Date\" of the trade on Form 4-Effective_Date.</li>
+<li><b>filing_date</b>: Date on which the form was filed</li>
+<li><b>tran_acq_disp</b>: Code indicating whether shares were acquired or disposed; A=Acquired, D=Disposed</li>
+<li><b>reported_shares_owned</b>: As-reported shares held after transaction, per filing</li>
+<li><b>deriv_nonderiv</b>: Code indicating whether shares are held directly or through derivatives, such as options; D=Derivative, N=Non-Derivative</li>
+<li><b>lionshares_position</b>: Calculated shares held after transaction based on running net total of shares transacted since most recent proxy or 10-K.This number is adjusted for corporate actions.</li>
+<li><b>lionshares_as_of_date</b>: As-of-date that corresponds with the Lionshares_Position; typically the most recent trade date reported in the filing</li>
+<li><b>exercise_price</b>: Unit price at which any options were exercised, represented in USD.</li>
+<li><b>tran_price</b>: As-reported (unadjusted) unit price at which shares were acquired or disposed, represented in USD.</li>
+<li><b>tran_value</b>: Value of the transaction, calculated as Tran_Shares * Tran_Price, represented in USD. This value is not adjusted for corporate actions.</li>
+<li><b>trade_date</b>: Date of the earliest transaction</li>
+<li><b>direct_indirect</b>: Code indicating the nature of ownership of the shares being transacted; D=Direct, I=Indirect</li>
+<li><b>tran_code</b>: Code denoting the nature of the transaction</li>
+<li><b>form_type</b>: Type of filing denoting the nature of the disclosure</li>
+</ul></details>
+<details><summary>own_v5.own_inst_13f_detail</summary><p><i>This table contains historical institutional holdings of equity securities obtained from 13F filings.  Quarterly holdings for active and terminated 13F filers are included. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>adj_holding</b>: Share amount held by the fund as of the report date, adjusted for corporate actions</li>
+<li><b>adj_mv</b>: Total share amount multiplied by the latest month-end share price, adjusted for corporate actions as per FactSet's methodology, represented in USD.</li>
+<li><b>reported_holding</b>: Share amount held by the institution as reported in the source</li>
+</ul></details>
+<details><summary>own_v5.own_inst_schedule_d_combined</summary><p><i>This table contains those institutions that FactSet has designated aggregate management entities for specific schedule D filers.  The FactSet_Filer_Entity_ID represents those institutions that FactSet \"rolls-up\" under its appropriate aggregate institution (FactSet_Rollup_Entity_ID).</i></p>
+<ul>
+<li><b>factset_filer_entity_id</b>: Unique FactSet-generated identifier assigned to a specific Schedule D filer</li>
+<li><b>factset_rollup_entity_id</b>: Unique FactSet-generated identifier assigned to the aggregate management entity for the specific Schedule D filer (FactSet_Filer_Entity_ID)</li>
+</ul></details>
+<details><summary>own_v5.own_inst_schedule_d_detail</summary><p><i>This table contains historical fund holdings captured at the security level for all active and terminated Scheduled D portfolios.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>reported_holding</b>: Share amount held by the fund as reported in the source</li>
+<li><b>reported_mv</b>: Market value held by the fund as reported in the source, represented in USD.</li>
+</ul></details>
+<details><summary>own_v5.own_inst_schedule_d_generic</summary><p><i>This table contains a summary of generic positions where security level detail is not available for Schedule D filings.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>generic_id</b>: Code representing a security type or group of security types under which holdings can be aggregated</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>reported_mv</b>: Aggregated as-reported market value for the generic position</li>
+</ul></details>
+<details><summary>own_v5.own_inst_stakes_detail</summary><p><i>This table contains historical institutional holdings of equity securities obtained from stakes-based sources.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>as_of_date</b>: Report date of the position</li>
+<li><b>position</b>: Number of shares held, adjusted for all corporate actions except MERG,SPIN,EXCH</li>
+<li><b>indirect_options</b>: Number of options/indirect shares held</li>
+<li><b>source_code</b>: One-character code representing the source used to retrieve the position</li>
+<li><b>comments</b>: Textual description providing additional detail about the position</li>
+<li><b>current_flag</b>: A flag indicating if the record is considered current</li>
+</ul></details>
+<details><summary>own_v5.own_reg_fund_detail</summary><p><i>This table contains historical fund holdings in equity and fixed income securities for all active and terminated funds.  The file is limited to 18 months of history. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>adj_holding</b>: Share amount held by the fund as of the report date, adjusted for corporate actions</li>
+<li><b>adj_mv</b>: Total share amount multiplied by the latest month-end share price, adjusted for corporate actions as per FactSet's methodology, represented in USD.</li>
+<li><b>reported_holding</b>: Share amount held by the fund as reported in the source</li>
+<li><b>reported_mv</b>: Market value held by the fund as reported in the source, represented in USD.</li>
+</ul></details>
+<details><summary>own_v5.own_reg_fund_generic</summary><p><i>This table contains a summary of generic positions where security level detail is not available.</i></p>
+<ul>
+<li><b>factset_fund_id</b>: Unique FactSet-generated identifier assigned to a fund</li>
+<li><b>generic_id</b>: Code representing a security type or group of security types under which holdings can be aggregated</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>reported_mv</b>: Aggregated as-reported market value for the generic position</li>
+</ul></details>
+<details><summary>own_v5.own_sec_13f_reportable</summary><p><i>This table contains the list of \"Section 13(f) securities\" as defined by Rule 13f-1(c) per the SEC.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>report_date</b>: Calendar quarter date the security was considered a section 13(f) security</li>
+<li><b>status</b>: Code indicating revisions that have made to the list. The word \"ADDED\" indicates that the security has become a Section 13(f) security. The word \"DELETED\" indicates that the security ceases to be a 13(f) security since the date of the last list.</li>
+</ul></details>
+<details><summary>own_v5.own_sec_adr_ord_ratio</summary><p><i>This table contains mappings from ADR shares to the underlying ordinary share. The ADR ratio is also included. Only active securities are supported.</i></p>
+<ul>
+<li><b>adr_fsym_id</b>: Unique FactSet generated identifier assigned to a security, representing an ADR</li>
+<li><b>one_adr_eq</b>: Number of a common or ordinary shares that are equivalent to one American Depositary Receipt (ADR)</li>
+<li><b>ord_fsym_id</b>: Unique FactSet generated identifier assigned to a security, representing the underlying ordinary share</li>
+</ul></details>
+<details><summary>own_v5.own_sec_coverage</summary><p><i>This table contains basic security data for securities included in the Ownership DataFeed packages. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>security_name</b>: Name of the security associated with the identifier</li>
+<li><b>iso_country</b>: Two-letter code for the country in which the entity is domiciled. This would be the country that corresponds to the entity's headquarters. For funds the domicile represents where the fund is registered and established.</li>
+<li><b>mic_exchange_code</b>: Code denoting an exchange. This is the ISO 10383 standard for exchanges and market identification (MIC).</li>
+<li><b>issue_type</b>: Code identifying the security's type (equity, ADR, Preferred, ETF, etc.)</li>
+<li><b>cap_group</b>: Security's classification based on market capitalization</li>
+<li><b>fds_uksr_flag</b>: Flag indicating whether the security has UK share register data available</li>
+<li><b>adjdate</b>: Date through which corporate actions have been applied</li>
+<li><b>votes</b>: Number of votes per share</li>
+<li><b>active</b>: Flag indicating whether the security is active (1) or terminated (0)</li>
+<li><b>universe_type</b>: Code denoting whether the security is considered equity (EQ) or fixed income (FI) by FactSet Symbology</li>
+<li><b>fds_13f_flag</b>: Flag indicating if the security is 13F reportable as per FactSet methodology</li>
+<li><b>fds_13f_ca_flag</b>: Flag indicating whether the security is considered to be a Canadian 13F reportable security per FactSet methodology</li>
+</ul></details>
+<details><summary>own_v5.own_sec_entity_hist</summary><p><i>This table contains historical and current FactSet Permanent Identifier (FSYM_ID) to FactSet Entity Identifier (FACTSET_ENTITY_ID) mappings, with dates, for those entities included in the Ownership universe. These mappings are provided for equity securities at the security FSYM_ID level.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>own_v5.own_sec_map</summary><p><i>This table contains the mapping of equity securities to the FSYM_ID that Ownership data is published under. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>fsym_company_id</b>: Unique FactSet-generated identifier assigned to a security. This is the security that is covered by FactSet Ownership for the instrument published in the FSYM_ID field.</li>
+</ul></details>
+<details><summary>own_v5.own_sec_prices</summary><p><i>This table contains month end equity security pricing and shares outstanding data used to value ownership data.  Both adjusted and unadjusted data points are provided. Active and terminated securities are included. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>price_date</b>: As-of-date for price and shares outstanding</li>
+<li><b>unadj_price</b>: Unadjusted price as of the price date, represented in USD.</li>
+<li><b>unadj_shares_outstanding</b>: Unadjusted number of shares outstanding as of the price date</li>
+<li><b>adj_price</b>: Adjusted price as of the price date, represented in USD.</li>
+<li><b>adj_shares_outstanding</b>: Adjusted number of shares outstanding as of the price date</li>
+</ul></details>
+<details><summary>own_v5.own_stakes_detail</summary><p><i>This table contains current and historical corporate action adjusted stakes holdings for equity securities. Active and terminated securities are included. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an insider or stakeholder</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>position</b>: Number of shares held, adjusted for corporate actions</li>
+<li><b>indirect_options</b>: Number of options/indirect shares held</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>source_code</b>: One-character code representing the source used to retrieve the position</li>
+<li><b>comments</b>: Textual description providing additional detail about the position</li>
+<li><b>current_flag</b>: A flag indicating if the record is considered current</li>
+</ul></details>
+<details><summary>own_v5.own_uksr_cust_detail</summary><p><i>This table contains current & historical corporate action adjusted UKSR holdings data for equity securities reported by custodial banks. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>position</b>: Number of shares held</li>
+<li><b>source_code</b>: One-character code representing the type of information source</li>
+</ul></details>
+<details><summary>own_v5.own_uksr_detail</summary><p><i>This table contains current and historical corporate action adjusted UKSR holdings data for equity securities. FSYM_ID is represented at the security level (-S).</i></p>
+<ul>
+<li><b>factset_bo_entity_id</b>: Unique FactSet-generated identifier assigned to the benefical owner of the security</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>report_date</b>: Reporting date of the position.</li>
+<li><b>position</b>: Number of shares held</li>
+<li><b>source_code</b>: One-character code representing the source used to retrieve the position</li>
+</ul></details>
+<details><summary>sym_v1.sym_address</summary><p><i>This table contains mappings for Address_IDs published in any Standard DataFeed.</i></p>
+<ul>
+<li><b>address_id</b>: Unique identifier assigned to an entity's location</li>
+<li><b>city_state_postal</b>: City, state and postal code in the entity's address</li>
+<li><b>location_street1</b>: First street line in the entity's address</li>
+<li><b>location_street2</b>: Second street line in the entity's address</li>
+<li><b>location_street3</b>: Third street line in the entity's address</li>
+<li><b>iso_country</b>: Two-letter code representing the country the address is located in</li>
+<li><b>tele_full</b>: Full telephone number tied to an address, including the country code and area code</li>
+<li><b>fax_full</b>: Full fax number, including the country code and area code</li>
+</ul></details>
+<details><summary>sym_v1.sym_coverage</summary><p><i>This table contains reference data on the securities and listings in the FactSet Symbology universe.</i></p>
+<ul>
+<li><b>fsym_id</b>: A unique FactSet generated identifier assigned to a security.</li>
+<li><b>currency</b>: Code representing the currency in which the security or listing trades</li>
+<li><b>proper_name</b>: Name of the security associated with the identifier</li>
+<li><b>fsym_primary_equity_id</b>: FactSet Permanent Identifier representing the primary equity on the identifier's most liquid exchange</li>
+<li><b>fsym_primary_listing_id</b>: Most liquid individual listing for a currency and country or security</li>
+<li><b>active_flag</b>: Flag indicating whether the record is currently active (1) or inactive (0). Please note that this field is not supported for bank loans; therefore null values represent \"unknown\".</li>
+<li><b>fsym_security_id</b>: Security-level FactSet Permanent Identifier associated with the identifier</li>
+<li><b>universe_type</b>: Code denoting whether the security is considered equity (EQ) or fixed income (FI) by FactSet Symbology</li>
+<li><b>fref_security_type</b>: Code denoting the security's type</li>
+<li><b>fref_listing_exchange</b>: Code denoting the exchange on which the security trades</li>
+<li><b>listing_flag</b>: Flag indicating that the identifier represents an individual listing</li>
+<li><b>regional_flag</b>: Flag indicating that the identifier represents the most liquid listing for a specific currency and country</li>
+<li><b>security_flag</b>: Flag indicating that the identifier represents a security</li>
+<li><b>fsym_regional_id</b>: Regional-level FactSet Permanent Identifier associated with the identifier</li>
+</ul></details>
+<details><summary>sym_v1.sym_entity</summary><p><i>This table contains FactSet Entity Identifier (FactSet_Entity_ID) mappings for entities supported by FactSet.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_proper_name</b>: Name that the entity is commonly referred to as, normalized and in proper case</li>
+<li><b>iso_country</b>: Two-letter code representing the country in which the entity is domiciled. This corresponds to the country of the company's headquarters.</li>
+<li><b>entity_type</b>: Three-letter code identifying the entity's structure</li>
+</ul></details>
+</div>
+
+<div id="sanctionsTableSection" class="hide">
+    <h4 id="sanctionsTableName">Tables in Sanctions</h4>
+    <details><summary>sanc_v1.sanc_address</summary><p><i>This table contains address information for entity locations. Complete address information can be found by joining to the sym_address table.</i></p>
+<ul>
+<li><b>address_id</b>: Unique identifier assigned to an entity's location</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_aliases</summary><p><i>This table contains aliases that individuals may go by. The aliases are sourced directly from the Sanctions lists.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>name_type</b>: Text string denoting the type of name</li>
+<li><b>name_value</b>: The name that the individual may go by, sourced directly from the sanctions lists.</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_coverage</summary><p><i>This table contains all the entities covered by the Sanctions feed.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing the ETF</li>
+<li><b>list_participant_flag</b>: Flag indicating whether the entity currently or historically exists on any sanctions list</li>
+<li><b>active_list_participant_flag</b>: This is the ACTIVE_LIST_PARTICIPANT_FLAG</li>
+<li><b>related_entity_flag</b>: This is the RELATED_ENTITY_FLAG</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_ent_affiliates</summary><p><i>This table contains affiliated entity relationships. Institutional and stakeholder ownership based relationships between entities where the percent held is greater than 1%.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>factset_affiliated_entity_id</b>: Unique FactSet-generated entity level identifier assigned to the Affiliated Entity</li>
+<li><b>pct_held</b>: Percent of the Affiliated Entity held by the entity. This is only available for Ownership related affiliation types.</li>
+<li><b>aff_type_code</b>: Code representing the type of relationship between an entity and an affiliated entity</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_ent_identifiers</summary><p><i>This table contains Legal Entity identifiers (LEI) for entities.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_id_type</b>: Code denoting a type of entity identifier</li>
+<li><b>entity_id_value</b>: Identifier that corresponds with the Entity Identifier Type</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_ent_structure</summary><p><i>This table contains parent hierarchy relationships.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>factset_parent_entity_id</b>: Unique FactSet-generated identifier assigned to the immediate majority owner of the entity's equity</li>
+<li><b>factset_ult_parent_entity_id</b>: Unique FactSet-generated identifier representing the ultimate owner of the entity's equity</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_lists</summary><p><i>This table contains the individuals and entities that appear or have appeared on various sanctions lists maintained by US,GB,UN and EU.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>list_id</b>: Unique identifier representing the specific sanctions list that the individual or entity appears on</li>
+<li><b>inception_date</b>: Date that the individual or entity first appeared on the list, or the effective date, if provided. If the date is unknown, '1900-01-01' will be used. Over time, FactSet will be researching unknown inception dates and will add dates whenever possible.</li>
+<li><b>termination_date</b>: Date that the individual or entity was removed from the list, or the termination date, if provided. If the termination date is null, then the individual/entity appears on the most recent list.</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_relationships</summary><p><i>This table contains relationships between two entities/individuals that FactSet has been able to derive by identifying the existence of shared sanctions lists.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_relation_type</b>: Code denoting the type of relationship that exists between two entities</li>
+<li><b>factset_related_entity_id</b>: Unique FactSet-generated identifier assigned to the related entity</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_sec_entity</summary><p><i>This table contains FactSet Permanent Identifier (FSYM_ID) to FactSet Entity Identifier (FactSet_Entity_ID) mappings for those entities included in the US Sanctions universe. These mappings are provided at the security-level.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>sanc_v1.sanc_sec_entity_hist</summary><p><i>This table contains historical and current FactSet Permanent Identifier (FSYM_ID) to FactSet Entity Identifier (FACTSET_ENTITY_ID) mappings with dates, for those entities included in the Sanctions universe. These mappings are provided for equity securities at the security FSYM_ID level.</i></p>
+<ul>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+</ul></details>
+<details><summary>sym_v1.sym_address</summary><p><i>This table contains mappings for Address_IDs published in any Standard DataFeed.</i></p>
+<ul>
+<li><b>address_id</b>: Unique identifier assigned to an entity's location</li>
+<li><b>city_state_postal</b>: City, state and postal code in the entity's address</li>
+<li><b>location_street1</b>: First street line in the entity's address</li>
+<li><b>location_street2</b>: Second street line in the entity's address</li>
+<li><b>location_street3</b>: Third street line in the entity's address</li>
+<li><b>iso_country</b>: Two-letter code representing the country the address is located in</li>
+<li><b>tele_full</b>: Full telephone number tied to an address, including the country code and area code</li>
+<li><b>fax_full</b>: Full fax number, including the country code and area code</li>
+</ul></details>
+<details><summary>sym_v1.sym_entity</summary><p><i>This table contains FactSet Entity Identifier (FactSet_Entity_ID) mappings for entities supported by FactSet.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>entity_proper_name</b>: Name that the entity is commonly referred to as, normalized and in proper case</li>
+<li><b>iso_country</b>: Two-letter code representing the country in which the entity is domiciled. This corresponds to the country of the company's headquarters.</li>
+<li><b>entity_type</b>: Three-letter code identifying the entity's structure</li>
+</ul></details>
+<details><summary>sym_v1.sym_entity_sector</summary><p><i>This table contains FactSet Entity Identifier (FactSet_Entity_ID) to sector and industry classification mappings.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>primary_sic_code</b>: Four-digit code that identifies the business type of the entity</li>
+<li><b>industry_code</b>: FactSet proprietary industry code assigned to the entity</li>
+<li><b>sector_code</b>: Four-digit code identifying FactSet broad industry sector classification</li>
+</ul></details>
+<details><summary>ref_v2.affiliate_type_map</summary><p><i>This table contains a mapping of the codes representing affiliate types to their descriptions.</i></p>
+<ul>
+<li><b>aff_type_code</b>: Code representing the type of relationship between an entity and an affiliated entity</li>
+<li><b>aff_type_desc</b>: Textual description of the relationship</li>
+</ul></details>
+<details><summary>ref_v2.country_map</summary><p><i>This table contains a mapping of the ISO country codes to their descriptions, regions and currency.</i></p>
+<ul>
+<li><b>iso_country</b>: Two-letter code representing a country</li>
+<li><b>country_desc</b>: Common name of the country</li>
+<li><b>region_code</b>: One-letter FactSet-generated code representing a global region</li>
+<li><b>iso_currency</b>: Code representing the country's currency</li>
+</ul></details>
+<details><summary>ref_v2.entity_relation_type_map</summary><p><i>This table contains a mapping of the codes representing entity relationship types to their descriptions.</i></p>
+<ul>
+<li><b>entity_relation_type_code</b>: Code representing the type of relationship that exists between two entities</li>
+<li><b>entity_relation_type_desc</b>: Textual description of the relationship type</li>
+</ul></details>
+<details><summary>ref_v2.list_map</summary><p><i>This table contains a mapping between list IDs and their descriptions.</i></p>
+<ul>
+<li><b>list_id</b>: Code representing a sanctions list</li>
+<li><b>list_desc</b>: Textual description of the sanctions list</li>
+<li><b>list_type</b>: Textual description denoting the general type of list</li>
+<li><b>iso_country</b>: Two-letter code representing the country that has published the sanctions list</li>
+</ul></details>
+<details><summary>ref_v2.region_map</summary><p><i>This table contains a mapping of the codes representing FactSet proprietary global regions to their descriptions.</i></p>
+<ul>
+<li><b>region_code</b>: One-letter FactSet-generated code representing a global region</li>
+<li><b>region_desc</b>: Textual description of the FactSet proprietary global region</li>
+</ul></details>
+</div>
+
+<div id="debtTableSection" class="hide">
+    <h4 id="debtTableName">Tables in Debt Capital Structure</h4>
+    <details><summary>dcs_v2.dcs_cusip_hist</summary><p><i>This table contains historical CUSIP to FactSet Permanent Identifier (FSYM_ID) mappings for those securities linked to the reporting and issuing entities in the DCS dataset.</i></p>
+<ul>
+<li><b>cusip</b>: Unique nine-character identifier assigned to a security</li>
+<li><b>fsym_id</b>: Unique FactSet-generated identifier assigned to a security</li>
+<li><b>start_date</b>: Date the identifier was first associated with the fsym_id</li>
+<li><b>end_date</b>: Date the identifier was last associated with the fsym_id</li>
+<li><b>most_recent</b>: Flag indicating whether the identifier is the most recent for the security</li>
+</ul></details>
+<details><summary>dcs_v2.dcs_details</summary><p><i>This table contains details on the individual debt instruments.</i></p>
+<ul>
+<li><b>detail_id</b>: Unique FactSet-generated identifier that represents the instrument for a specific reporting period</li>
+<li><b>currency</b>: Code representing the reporting currency per the filing</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing the filing entity</li>
+<li><b>report_date</b>: The date for period for which the financial report was filed.</li>
+<li><b>debt_code</b>: Code representing the instrument debt type</li>
+<li><b>instrument_id</b>: Public or FactSet-generated instrument identifier</li>
+<li><b>issue_date</b>: Date of issuance for the instrument</li>
+<li><b>related_to_id</b>: Instrument identifier corresponding to a revolver linked to an associated security</li>
+<li><b>asset_desc</b>: Textual description of the collateral securing a loan</li>
+<li><b>collateral_type</b>: Type of asset/collateral demanded by loan lenders in order to secure a loan</li>
+<li><b>principal_adjustment_detail_id</b>: Detail ID for the principal adjustment security</li>
+<li><b>multi_linked_bd_pa</b>: Flag indicating whether more than one debt type is linked to BD_PA principal adjustment types in a given reporting period</li>
+<li><b>multi_linked_rc_pa</b>: Flag indicating more than one debt type is linked to RC_PA principal adjustment types in a given reporting period</li>
+<li><b>multi_linked_tl_pa</b>: Flag indicating whether more than one debt type is linked to TL_PA principal adjustment types in a given reporting period</li>
+<li><b>multi_linked_st_pa</b>: Flag indicating whether more than one debt type is linked to ST_PA principal adjustment types in a given reporting period</li>
+<li><b>multi_linked_bd_am</b>: Flag indicating whether more than one debt type is linked to BD_AM principal adjustment types in a given reporting period</li>
+<li><b>maturity_year_month</b>: Instrument's final maturity month</li>
+<li><b>maturity_year_day</b>: Instrument's final maturity day</li>
+<li><b>maturity_year_start</b>: Instrument's initial maturity year</li>
+<li><b>maturity_year_start_month</b>: Instrument's initial maturity month</li>
+<li><b>maturity_year_start_day</b>: Instrument's initial maturity day</li>
+<li><b>maturity_date_range_flag</b>: Flag indicating that the instrument has a maturity range</li>
+<li><b>os_amount</b>: Principal outstanding of an instrument at report date. For each report date, the currency corresponds to the Currency field. Amounts are in millions. This field can be null for active securities where the Debt_Code in ('TL_FA', 'ST_FA') and the ISSUE_AMOUNT is not null.</li>
+<li><b>avail_amount</b>: Amount of funds available under credit agreement terms/restrictions at report date. For each report date, the currency corresponds to the Currency field. Amounts are in millions.</li>
+<li><b>borrowing_base</b>: Allowable borrowing base of the issuer - adjusted per credit agreement terms at report date. For each report date, the currency corresponds to the Currency field. Amounts are in millions.</li>
+<li><b>active</b>: Flag indicating whether the instrument is active (1) or inactive (0)</li>
+<li><b>issuance_currency</b>: Code representing the currency in which the instrument was issued</li>
+<li><b>maturity_year</b>: Instrument's final maturity year</li>
+<li><b>coupon_index2</b>: Secondary floating rate index</li>
+<li><b>coupon_margin_min</b>: Minimum primary floating rate margin in basis points</li>
+<li><b>coupon_margin_max</b>: Maximum primary floating rate margin in basis points</li>
+<li><b>coupon_margin_min2</b>: Minimum secondary floating rate margin in basis points</li>
+<li><b>coupon_margin_max2</b>: Maximum secondary floating rate margin in basis points</li>
+<li><b>issue_amount</b>: Amount at issuance of the instrument. For each report date, the currency corresponds to the Currency field. Amounts are in millions.</li>
+<li><b>instrument_description</b>: FactSet-generated conventional instrument description</li>
+<li><b>factset_issuer_entity_id</b>: Unique FactSet-generated entity identifier representing the issuer</li>
+<li><b>coupon_code</b>: Code representing the coupon type</li>
+<li><b>coupon_rate_min</b>: Minimum allowable coupon rate for a specific instrument over its life</li>
+<li><b>coupon_rate_max</b>: Maximum allowable coupon rate for a specific instrument over its life</li>
+<li><b>coupon_index</b>: Primary floating rate index</li>
+</ul></details>
+<details><summary>dcs_v2.dcs_entity_structure</summary><p><i>This table contains the universe of entities that reported or issued a DCS debt instrument, their parents, and their ultimate parents.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing an entity</li>
+<li><b>factset_parent_entity_id</b>: Unique FactSet-generated identifier assigned to the immediate majority owner of the entity's equity</li>
+<li><b>factset_ultimate_parent_entity_id</b>: Unique FactSet-generated identifier assigned to the ultimate parent to which the entity rolls up to</li>
+</ul></details>
+<details><summary>dcs_v2.dcs_filings</summary><p><i>This table contains information both on the filings from which the DCS debt instrument data was derived and on the associated reporting period.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing the filing entity</li>
+<li><b>report_date</b>: The date for period for which the financial report was filed.</li>
+<li><b>currency</b>: Code representing the reporting currency per the filing</li>
+<li><b>filing_type</b>: Reference filing type</li>
+<li><b>publication_date</b>: Date the filing was received</li>
+<li><b>unit_amount_code</b>: One-letter code representing the unit factor as reported in the filing</li>
+<li><b>dm_unit_amount_code</b>: Code representing the unit amount of the debt maturity schedule as reported in the filing</li>
+<li><b>reporting_period_code</b>: Code representing the unique reporting period</li>
+<li><b>st_current_portion_lt</b>: Flag indicating whether the current portion within a period corresponds to the next 12 months. 1 indicates it is due within the next 12 months. 0 indicates it is due within the remainder of the fiscal year.</li>
+</ul></details>
+<details><summary>dcs_v2.dcs_maturity_schedule</summary><p><i>This table contains the amount of debt due to mature within the specified time period as reported in the entity's filing.</i></p>
+<ul>
+<li><b>debt_maturity_id</b>: FactSet-generated identifier representing a debt maturity time period as listed in a specific filing of the entity</li>
+<li><b>currency</b>: Code representing the reporting currency per the filing</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing the filing entity</li>
+<li><b>report_date</b>: The date for period for which the financial report was filed.</li>
+<li><b>fiscal_year_start</b>: Individual fiscal year, the start of a defined date range, or the representative of all years from that year forward in which the debt amount matures</li>
+<li><b>fiscal_year_end</b>: Fiscal year ending the debt maturity date range</li>
+<li><b>fiscal_year_code</b>: Code representing the type of time period depicted by a fiscal year date in the debt maturity schedule</li>
+<li><b>debt_maturity_amount</b>: Amount of debt due in the associated fiscal period. For each report date, the currency corresponds to the Currency field. Amounts are in millions.</li>
+<li><b>capital_lease_flag</b>: Flag indicating whether capital lease payments are included in the debt maturity amount, when available in an entity's filings</li>
+<li><b>interest_flag</b>: Flag indicating whether interest payments are included in the debt maturity amount, when available in an entity's filings</li>
+<li><b>discount_premium_flag</b>: Flag indicating whether discounts or premiums are included in the debt maturity amount, when available in an entity's filings</li>
+<li><b>other_obligations_flag</b>: Flag indicating whether other contractual obligations are included in the debt maturity amount, when available in an entity's filings</li>
+</ul></details>
+<details><summary>dcs_v2.dcs_security</summary><p><i>This table contains the universe of active DCS and non-DCS instruments linked to the reporting and issuing entities in the DCS dataset.</i></p>
+<ul>
+<li><b>instrument_id</b>: Public or FactSet-generated instrument identifier</li>
+<li><b>dcs_inclusion_flag</b>: Flag indicating whether an instrument is in the DCS universe</li>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing the entity that reported and/or issued the DCS debt instrument</li>
+</ul></details>
+<details><summary>dcs_v2.dcs_summary_values</summary><p><i>This table contains summary level values for an entity as of a specific report date.</i></p>
+<ul>
+<li><b>factset_entity_id</b>: Unique FactSet-generated identifier representing the filing entity</li>
+<li><b>report_date</b>: The date for period for which the financial report was filed.</li>
+<li><b>summary_code</b>: Code representing the summary type</li>
+<li><b>currency</b>: Code representing the reporting currency per the filing</li>
+<li><b>value</b>: Summary level value.  For each report date, the currency corresponds to the Currency field.  Amounts are in millions.</li>
+</ul></details>
+<details><summary>ref_v2.asset_class_map</summary><p><i>This table contains a mapping of the codes representing asset classes to their descriptions.</i></p>
+<ul>
+<li><b>asset_class_code</b>: Code representing the asset class</li>
+<li><b>asset_class_desc</b>: Textual description of the asset class</li>
+</ul></details>
+<details><summary>ref_v2.dcs_category_map</summary><p><i>This table contains a mapping of the codes representing the types of summary level categories to their descriptions.</i></p>
+<ul>
+<li><b>category_code</b>: Code representing the type of summary level category</li>
+<li><b>category_desc</b>: Textual description of summary level category</li>
+</ul></details>
+<details><summary>ref_v2.dcs_coupon_map</summary><p><i>This table contains a mapping of the codes representing the coupon types to their descriptions.</i></p>
+<ul>
+<li><b>coupon_code</b>: Code representing the coupon type</li>
+<li><b>coupon_desc</b>: Textual description of the coupon type</li>
+</ul></details>
+<details><summary>ref_v2.dcs_debt_map</summary><p><i>This table contains a mapping of the codes representing the debt types to their descriptions, instrument issue types, and seniority types.</i></p>
+<ul>
+<li><b>debt_code</b>: Code representing the instrument debt type</li>
+<li><b>debt_desc</b>: Textual description of the instrument debt type</li>
+<li><b>issue_type</b>: Code representing the instrument issue type</li>
+<li><b>seniority_code</b>: Code representing the seniority assigned to the security</li>
+</ul></details>
+<details><summary>ref_v2.dcs_fiscal_year_map</summary><p><i>This table contains a mapping of the codes representing the types of time periods depicted by fiscal year dates in the debt maturity schedule to their descriptions.</i></p>
+<ul>
+<li><b>fiscal_year_code</b>: Code representing the type of time period depicted by a fiscal year date in the debt maturity schedule</li>
+<li><b>fiscal_year_desc</b>: Textual description of the type of time period depicted by a fiscal year date in the debt maturity schedule</li>
+</ul></details>
+<details><summary>ref_v2.dcs_reporting_period_map</summary><p><i>This table contains a mapping of the codes representing the reporting periods to their descriptions.</i></p>
+<ul>
+<li><b>reporting_period_code</b>: Code representing the unique reporting period</li>
+<li><b>reporting_period_desc</b>: Textual description of the reporting period</li>
+</ul></details>
+<details><summary>ref_v2.dcs_seniority_map</summary><p><i>This table contains a mapping of the codes representing the seniority types to their descriptions.</i></p>
+<ul>
+<li><b>seniority_code</b>: Code representing the seniority assigned to the security</li>
+<li><b>seniority_desc</b>: Textual description of the seniority</li>
+</ul></details>
+<details><summary>ref_v2.dcs_summary_map</summary><p><i>This table contains a mapping of the codes representing the summary types to their descriptions and summary level categories.</i></p>
+<ul>
+<li><b>summary_code</b>: Code representing the summary type</li>
+<li><b>summary_desc</b>: Textual description of the summary type</li>
+<li><b>category_code</b>: Code representing the type of summary level category</li>
+</ul></details>
+<details><summary>ref_v2.iso_currency_map</summary><p><i>This table contains a mapping of the current and historical ISO currency codes to their descriptions.</i></p>
+<ul>
+<li><b>iso_currency</b>: Code representing the currency</li>
+<li><b>currency_desc</b>: Textual description of the currency</li>
+<li><b>active</b>: Flag indicating whether the iso_currency is active (1) or terminated (0)</li>
+</ul></details>
+<details><summary>ref_v2.issue_type_map</summary><p><i>This table contains a mapping of the codes representing the types of financial instruments to their descriptions and asset classes.</i></p>
+<ul>
+<li><b>issue_type_code</b>: Code representing the type of financial instrument</li>
+<li><b>issue_type_desc</b>: Textual description of the type of financial instrument</li>
+<li><b>asset_class_code</b>: Code representing the asset class</li>
+</ul></details>
+<details><summary>ref_v2.unit_amount_map</summary><p><i>This table contains a mapping of the codes representing the unit amounts to their descriptions.</i></p>
+<ul>
+<li><b>unit_amount_code</b>: One-letter code representing the unit factor of a number</li>
+<li><b>unit_amount_desc</b>: Textual description of the unit amount</li>
+</ul></details>
+</div>
+    </div>
+    <div class="right-side">
+        <h2>Type in Natural Language Query</h2>
+        <input type="text" id="myTextBox" placeholder="Select"/>
+        <div id="exampleSection" class="hide">
+            <h4 id="exampleTitle"></h4>
+            <select id="examplesDropdown" onchange="handleExampleSelection(this)">
+                <option disabled selected>Select Sample Query</option>
+                <!-- Dropdown options -->
+            </select>
+            <button id="compileButton">Compile</button>
+        </div>
+    </div>  
+</body>
+</html>
